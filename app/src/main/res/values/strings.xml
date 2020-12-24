@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">africellsurvey</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="statusicone">statusIcone</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="local">Local</string>
+    <string name="remote">Remote</string>
+    <string name="test_title">1.0</string>
+    <string name="go_to_form">GO TO FORM</string>
+    <string name="back">Back</string>
+</resources>
