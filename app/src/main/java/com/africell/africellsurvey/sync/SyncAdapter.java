@@ -54,7 +54,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize);
         contentResolver = context.getContentResolver();
         this.mContext = context;
-        //repository.getLocalForms();
+       // repository.getLocalForms();
     }
 
 
@@ -72,21 +72,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         File[] files = loadAllFormFile("data");
         String fname = null;
         String id = null;
-        if(files != null && files.length > 0)
-        for(int k=0; k<files.length; k++){
-             fname = files[k].getName();
-            if(!fname.contains(".json")){
-                id = fname;
-                fname = fname+".json";
-            }else{
+        if(files != null && files.length > 0) {
+            for (int k = 0; k < files.length; k++) {
+                fname = files[k].getName();
+                if (!fname.contains(".json")) {
+                    id = fname;
+                    fname = fname + ".json";
+                } else {
 
-                id = fname.substring(0,fname.indexOf(".json"));
+                    id = fname.substring(0, fname.indexOf(".json"));
+                }
+
+                String jsonData = loadJSONFromFile(fname, 'R');
+                sendData(id, jsonData);
             }
-
-            String jsonData = loadJSONFromFile(fname,'R');
-            sendData(id,jsonData);
         }
-
 
        /* for(SurveyForm sf : surveyForms){
             String jsons = loadJSONFromFile(sf.getSchema_path(),'R');
@@ -107,18 +107,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         JSONObject jos;
         try {
             JSONArray ja = new JSONArray(json);
-            if(ja.length() > 0)
-            for(int i=0; i< ja.length();  i++){
-                JSONObject jo = ja.getJSONObject(i);
-                //jsonInputString = jo.toString();
-                //FormData fd = new FormData(formId,jo);
-                jos = new JSONObject();
-                jos.put("formId",formId);
-                jos.put("formData",jo);
-                jsonInputString = jos.toString();
-                currD = i;
-                postRequest(jsonInputString);
-                sent(formId,ja);
+            if(ja.length() > 0) {
+                for (int i = 0; i < ja.length(); i++) {
+                    JSONObject jo = ja.getJSONObject(i);
+                    //jsonInputString = jo.toString();
+                    //FormData fd = new FormData(formId,jo);
+                    jos = new JSONObject();
+                    jos.put("formId", formId);
+                    jos.put("formData", jo);
+                    jsonInputString = jos.toString();
+                    currD = i;
+                    postRequest(jsonInputString);
+                    sent(formId, ja);
                /* repository.sendData(fd)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -128,6 +128,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 */
 
 
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
