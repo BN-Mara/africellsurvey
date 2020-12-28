@@ -134,7 +134,7 @@ public class FormsFragment extends Fragment {
 
     }
 
-    private void observeData(){
+    public void observeData(){
        /* viewModel.getLocalForms().observe(getViewLifecycleOwner(), new Observer<List<SurveyForm>>() {
             @Override
             public void onChanged(List<SurveyForm> surveyForms) {
@@ -156,6 +156,17 @@ public class FormsFragment extends Fragment {
         });
         //adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initRecyclerView();
+        observeData();
+        setUpItemTouchHelper();
+        viewModel.getForms();
+
+    }
+
     private void initRecyclerView(){
         binding.formRV.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SurveyFormAdapter(getContext(), new SurveyFormAdapter.MyOnclikListner() {
@@ -163,8 +174,9 @@ public class FormsFragment extends Fragment {
             public void setOnclickLister(SurveyForm sf, int position) {
                 //sf.setIsDownloaded(1);
                 viewModel.insertForm(sf);
-                formList = viewModel.getLocalList();
-                viewModel.getFormList().setValue(formList);
+
+                //formList = viewModel.getLocalList();
+                //viewModel.getFormList().setValue(formList);
                 //viewModel.getForms();
                 //notifyAll();
                 //observeData();
@@ -181,6 +193,8 @@ public class FormsFragment extends Fragment {
                 //Toast.makeText(getContext(),sf.getFormSchema(),Toast.LENGTH_LONG).show();
             }
         },formList);
+        viewModel.getForms();
+        //observeData();
         binding.formRV.setAdapter(adapter);
     }
 
