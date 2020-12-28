@@ -12,17 +12,18 @@ import javax.inject.Inject;
 
 import dagger.hilt.EntryPoint;
 import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.internal.migration.InjectedByHilt;
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 public class SyncService extends Service {
     // Storage for an instance of the sync adapter
 
-    private static SyncAdapter sSyncAdapter = null;
+
+
+    SyncAdapter sSyncAdapter;
     // Object to use as a thread-safe lock
     private static final Object sSyncAdapterLock = new Object();
 
-    //@Inject
-    //public Repository repository;
     /*
      * Instantiate the sync adapter object.
      */
@@ -33,12 +34,16 @@ public class SyncService extends Service {
          * Set the sync adapter as syncable
          * Disallow parallel syncs
          */
-        synchronized (sSyncAdapterLock) {
+        /*synchronized (sSyncAdapterLock) {
             
             if (sSyncAdapter == null) {
                 sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+
             }
-        }
+        }*/
+        sSyncAdapter.getContext();
+
+
     }
     @Nullable
     @Override

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.africell.africellsurvey.db.SurveyFormDao;
 import com.africell.africellsurvey.model.FormData;
 import com.africell.africellsurvey.model.SurveyForm;
 import com.africell.africellsurvey.repository.Repository;
@@ -43,18 +44,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = "SyncAdapter";
     ContentResolver contentResolver;
     int currD = 0;
-
-   //@Inject
-    //Repository repository;
+    //@Inject
+    Repository repository;
 
     private List<SurveyForm> surveyForms;
 
     Context mContext;
-    public SyncAdapter(Context context, boolean autoInitialize) {
+    @Inject
+    public SyncAdapter(Context context, boolean autoInitialize,  Repository repository) {
         super(context, autoInitialize);
         contentResolver = context.getContentResolver();
         this.mContext = context;
-       // repository.getLocalForms();
+       this.repository = repository;
     }
 
 

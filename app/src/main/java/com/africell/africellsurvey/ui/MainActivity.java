@@ -2,6 +2,7 @@ package com.africell.africellsurvey.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 //import android.app.FragmentManager;
@@ -21,6 +22,8 @@ import com.africell.africellsurvey.ui.fragments.FormFragment;
 import com.africell.africellsurvey.ui.fragments.FormsFragment;
 import com.africell.africellsurvey.ui.fragments.LoginFragment;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
+
+import java.text.Normalizer;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -104,7 +107,19 @@ private SurveyFormViewModel viewModel;
            // FragmentManager fm = getFragmentManager();
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 Log.i("MainActivity", "popping backstack");
-                getSupportFragmentManager().popBackStack();
+                //viewModel.getForms();
+               getSupportFragmentManager().popBackStack();
+
+                    FormsFragment fragment = new FormsFragment();
+                viewModel.getForms();
+                    //fragment.observeData();
+
+
+
+
+
+
+
             } else {
                 Log.i("MainActivity", "nothing on backstack, calling super");
                 super.onBackPressed();

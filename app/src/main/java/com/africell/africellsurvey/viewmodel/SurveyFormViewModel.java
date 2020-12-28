@@ -191,7 +191,7 @@ public class SurveyFormViewModel extends AndroidViewModel {
         }
 
         saveFile(formSchema.toString(), form.getSchema_path(), 'S');
-        getForms();
+        //getForms();
         //localFormList = repository.getLocalForms();
     }
 

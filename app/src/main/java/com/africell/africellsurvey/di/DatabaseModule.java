@@ -6,6 +6,9 @@ import androidx.room.Room;
 
 import com.africell.africellsurvey.db.SurveyFormDB;
 import com.africell.africellsurvey.db.SurveyFormDao;
+import com.africell.africellsurvey.network.ApiService;
+import com.africell.africellsurvey.repository.Repository;
+import com.africell.africellsurvey.sync.SyncAdapter;
 
 import javax.inject.Singleton;
 
@@ -32,4 +35,6 @@ public class DatabaseModule {
     public static SurveyFormDao provideSurveyDao(SurveyFormDB surveyFormDB){
         return surveyFormDB.surveyFormDao();
     }
+
+
 }

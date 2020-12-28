@@ -21,7 +21,9 @@ public class NetworkModule {
     public static ApiService provideApiService(){
         return new Retrofit.Builder()
                 //10.0.2.2
-                .baseUrl("http://10.100.26.106/jsonmock/server.php/")
+                //192.168.43.45
+                //10.100.26.106
+                .baseUrl("http://192.168.43.45/jsonmock/server.php/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()

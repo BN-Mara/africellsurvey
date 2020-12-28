@@ -52,6 +52,13 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
             }
 
         }*///else{
+        if(mPreviousIndex==position){
+            //mList.get(position).setIsDownloaded(1);
+            //notifyDataSetChanged();
+            //holder.itemBiding.fstatusIc.setImageResource(R.drawable.ic_check);
+            //holder.itemBiding.fstatusIc.setEnabled(false);
+            //color on item selecting item
+        }
             if(mList.get(position).getIsDownloaded() == 0){
                 holder.itemBiding.fstatusIc.setImageResource(R.drawable.ic_download);
                 holder.itemBiding.fstatusIc.setEnabled(true);
