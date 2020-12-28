@@ -157,7 +157,7 @@ public class FormsFragment extends Fragment {
         //adapter.notifyDataSetChanged();
     }
 
-    @Override
+   /* @Override
     public void onStart() {
         super.onStart();
         initRecyclerView();
@@ -165,7 +165,7 @@ public class FormsFragment extends Fragment {
         setUpItemTouchHelper();
         viewModel.getForms();
 
-    }
+    }*/
 
     private void initRecyclerView(){
         binding.formRV.setLayoutManager(new LinearLayoutManager(getContext()));
