@@ -37,6 +37,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -191,6 +192,7 @@ public class SurveyFormViewModel extends AndroidViewModel {
         }
 
         saveFile(formSchema.toString(), form.getSchema_path(), 'S');
+
         //getForms();
         //localFormList = repository.getLocalForms();
     }
@@ -214,7 +216,26 @@ public class SurveyFormViewModel extends AndroidViewModel {
         }
         sf.setCountLocal(ja.length());
         repository.updateForm(sf);
+        //int [] dataCount = {ja.length(),0};
+        JSONArray dataCount = new JSONArray();
+        dataCount.put(ja.length());
+        dataCount.put(0);
+        SaveSharedPreference.addToShared(getApplication(),sf.getId(), dataCount.toString());
         saveFile(ja.toString(), sf.getSchema_path(), 'R');
+    }
+    public int[] getDataCount(){
+        int [] arr = {0,0};
+       String dcount =  SaveSharedPreference.getShared(getApplication(),getCurrentForm().getId());
+       if(dcount != null) {
+           try {
+               JSONArray ja = new JSONArray(dcount);
+               arr[0] = ja.getInt(0);
+               arr[1] = ja.getInt(1);
+           } catch (JSONException e) {
+               e.printStackTrace();
+           }
+       }
+       return arr;
     }
 
     public LiveData<List<SurveyForm>> getLocalForms() {

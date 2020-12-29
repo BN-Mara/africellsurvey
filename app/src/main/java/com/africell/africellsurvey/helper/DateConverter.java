@@ -27,7 +27,7 @@ public class DateConverter {
     public String getTimeStamp() {
         Time now = new Time();
         now.setToNow();
-        String sTime = now.format("%Y_%m_%d_%H_%M_%S");
+        String sTime = now.format("%d/%m/%Y %H:%M:%S");
         return sTime;
     }
 }

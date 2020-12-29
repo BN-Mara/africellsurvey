@@ -107,6 +107,17 @@ public class FormsFragment extends Fragment {
 
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initRecyclerView();
+        observeData();
+        setUpItemTouchHelper();
+        viewModel.getForms();
+
+    }
+
     private void setUpItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
             @Override

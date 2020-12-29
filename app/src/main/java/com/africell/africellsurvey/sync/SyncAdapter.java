@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.africell.africellsurvey.db.SurveyFormDao;
+import com.africell.africellsurvey.helper.SaveSharedPreference;
 import com.africell.africellsurvey.model.FormData;
 import com.africell.africellsurvey.model.SurveyForm;
 import com.africell.africellsurvey.repository.Repository;
@@ -45,17 +46,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     ContentResolver contentResolver;
     int currD = 0;
     //@Inject
-    Repository repository;
+    //Repository repository;
 
     private List<SurveyForm> surveyForms;
 
     Context mContext;
     @Inject
-    public SyncAdapter(Context context, boolean autoInitialize,  Repository repository) {
+    public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         contentResolver = context.getContentResolver();
         this.mContext = context;
-       this.repository = repository;
     }
 
 
@@ -74,8 +74,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String fname = null;
         String id = null;
         if(files != null && files.length > 0) {
-            for (int k = 0; k < files.length; k++) {
-                fname = files[k].getName();
+            for (File file : files) {
+                fname = file.getName();
                 if (!fname.contains(".json")) {
                     id = fname;
                     fname = fname + ".json";
@@ -137,7 +137,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
     public void postRequest(String jsonToSend){
         try {
-            URL url = new URL("http://10.100.26.106/jsonmock/server.php/");
+            URL url = new URL("http://192.168.43.45/jsonmock/server.php/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -161,6 +161,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void sent(String formId, JSONArray ja) {
         ja.remove(currD);
         saveFile(ja.toString(),formId+".json",'R');
+        String dataCount = SaveSharedPreference.getShared(mContext,formId);
+        JSONArray ja2 = new JSONArray();
+        try{
+            JSONArray ja1 = new JSONArray(dataCount);
+
+            ja2.put(ja1.getInt(0) - 1);
+            ja2.put(ja1.getInt(1) + 1);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        SaveSharedPreference.addToShared(mContext,formId,ja2.toString());
     }
     public File[] loadAllFormFile(String folder){
         File mdir = new File(mContext.getFilesDir(), folder );

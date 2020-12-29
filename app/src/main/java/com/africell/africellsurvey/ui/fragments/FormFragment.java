@@ -94,9 +94,10 @@ public class FormFragment extends Fragment {
     }
 
     public void displayDetails(){
+        int[] dataCount = viewModel.getDataCount();
 
-        binding.totalLocal.setText(""+viewModel.getCurrentForm().getCountLocal());
-        binding.totalRemote.setText(""+viewModel.getCurrentForm().getCountRemote());
+        binding.totalLocal.setText(""+dataCount[0]);
+        binding.totalRemote.setText(""+dataCount[1]);
         binding.fdate.setText(viewModel.getCurrentForm().getDownloadDate());
         binding.descr.setText(viewModel.getCurrentForm().getDescription());
         binding.ftitleVersion.setText(viewModel.getCurrentForm().getTitle()+" "+viewModel.getCurrentForm().getVersion());

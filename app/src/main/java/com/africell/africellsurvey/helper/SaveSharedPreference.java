@@ -24,5 +24,13 @@ public class SaveSharedPreference {
     public static boolean getLoggedStatus(Context context) {
         return getPreferences(context).getBoolean(LOGGED_IN_PREF, false);
     }
+    public static void addToShared(Context context, String key, String value){
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+    public static String getShared(Context context,String key) {
+        return getPreferences(context).getString(key, null);
+    }
 
 }

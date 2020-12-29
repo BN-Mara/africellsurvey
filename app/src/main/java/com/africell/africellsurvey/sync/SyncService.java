@@ -34,14 +34,14 @@ public class SyncService extends Service {
          * Set the sync adapter as syncable
          * Disallow parallel syncs
          */
-        /*synchronized (sSyncAdapterLock) {
+        synchronized (sSyncAdapterLock) {
             
             if (sSyncAdapter == null) {
                 sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
 
             }
-        }*/
-        sSyncAdapter.getContext();
+        }
+        //sSyncAdapter.getContext();
 
 
     }

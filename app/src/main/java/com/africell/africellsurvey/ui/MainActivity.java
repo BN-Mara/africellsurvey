@@ -73,8 +73,16 @@ private SurveyFormViewModel viewModel;
         viewModel = new ViewModelProvider(this).get(SurveyFormViewModel.class);
         //viewModel.deleteAll();
         if(viewModel.getSessionSatus()){
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,new FormsFragment()).addToBackStack(null)
-                    .commit();
+            try {
+                Fragment formFrag = (Fragment) FormsFragment.class.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,formFrag).addToBackStack(null)
+                        .commit();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+
         }else{
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,new LoginFragment()).addToBackStack(null)
                     .commit();
@@ -104,20 +112,19 @@ private SurveyFormViewModel viewModel;
         //super.onBackPressed();
         //Toast.makeText(this, viewModel.getFragment().toString(), Toast.LENGTH_LONG).show();
 
-           // FragmentManager fm = getFragmentManager();
+           FragmentManager fm = getSupportFragmentManager();
+        int backEntryCount = getSupportFragmentManager().getBackStackEntryCount();
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 Log.i("MainActivity", "popping backstack");
                 //viewModel.getForms();
-               getSupportFragmentManager().popBackStack();
+                //notify();
+               //getSupportFragmentManager().popBackStack();
 
-                    FormsFragment fragment = new FormsFragment();
-                viewModel.getForms();
+               Fragment fragment = fm.getFragments().get(0);
+               fragment.onResume();
+                //viewModel.getForms();
                     //fragment.observeData();
-
-
-
-
-
+                getSupportFragmentManager().popBackStack();
 
 
             } else {
