@@ -95,6 +95,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -110,6 +111,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
+        getActivity().setTitle(viewModel.getCurrentForm().getTitle());
         DataValueHashMap.init();
         initRecyclerView();
         fetchData();
@@ -161,7 +163,9 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         try {
             viewModel.saveFormData(viewModel.getCurrentForm(),jsonObject.toString());
             //fetchData();
+            DataValueHashMap.init();
             initRecyclerView();
+            //fetchData();
         } catch (JSONException e) {
             e.printStackTrace();
         }

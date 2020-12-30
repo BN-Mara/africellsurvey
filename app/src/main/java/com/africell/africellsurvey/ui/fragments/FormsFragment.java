@@ -49,6 +49,7 @@ public class FormsFragment extends Fragment {
     private SurveyFormViewModel viewModel;
     private SurveyFormAdapter adapter;
     private ArrayList<SurveyForm> formList;
+    private boolean isDataLoading;
 
 
     // TODO: Rename and change types of parameters
@@ -84,6 +85,7 @@ public class FormsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        getActivity().setTitle("Survey  forms");
     }
 
     @Override
@@ -92,6 +94,12 @@ public class FormsFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_forms, container, false);
         binding = FragmentFormsBinding.inflate(inflater,container,false);
+
+        //viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
+        //initRecyclerView();
+        //observeData();
+        //setUpItemTouchHelper();
+        //viewModel.getForms();
         return binding.getRoot();
 
     }
@@ -108,15 +116,23 @@ public class FormsFragment extends Fragment {
 
     }
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
+        viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
+        //viewModel.getForms();
+        //adapter.notifyDataSetChanged();
+
+
+        //Toast.makeText(getContext(),"onResume",  Toast.LENGTH_LONG).show();
         initRecyclerView();
         observeData();
         setUpItemTouchHelper();
         viewModel.getForms();
+        //super.onResume();
 
-    }
+
+    }*/
 
     private void setUpItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
@@ -178,6 +194,12 @@ public class FormsFragment extends Fragment {
 
     }*/
 
+   /* @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+    }*/
+
     private void initRecyclerView(){
         binding.formRV.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SurveyFormAdapter(getContext(), new SurveyFormAdapter.MyOnclikListner() {
@@ -204,6 +226,8 @@ public class FormsFragment extends Fragment {
                 //Toast.makeText(getContext(),sf.getFormSchema(),Toast.LENGTH_LONG).show();
             }
         },formList);
+        //adapter.updateList(viewModel.getLocalList());
+        //adapter.notifyDataSetChanged();
         viewModel.getForms();
         //observeData();
         binding.formRV.setAdapter(adapter);

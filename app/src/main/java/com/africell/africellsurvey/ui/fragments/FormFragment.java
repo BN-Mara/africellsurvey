@@ -3,6 +3,7 @@ package com.africell.africellsurvey.ui.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -73,6 +74,7 @@ public class FormFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        getActivity().setTitle("Form detail");
     }
 
     @Override
@@ -123,6 +125,14 @@ public class FormFragment extends Fragment {
                 ((MainActivity) requireActivity()).replaceFragment(FormsFragment.class);
             }
         });
+        /*requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ((MainActivity) requireActivity()).replaceFragment(FormsFragment.class);
+            }
+        });*/
+
+
 
     }
 }

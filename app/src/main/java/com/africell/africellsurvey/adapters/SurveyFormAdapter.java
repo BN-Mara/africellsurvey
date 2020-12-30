@@ -18,6 +18,8 @@ import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
 
 import java.util.ArrayList;
 
+import static java.util.logging.Logger.global;
+
 public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.FormViewHolder> {
     private Context mContext;
     private ArrayList<SurveyForm> mList;
@@ -44,6 +46,7 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
     public void onBindViewHolder(@NonNull FormViewHolder holder, int position) {
         holder.itemBiding.ftitle.setText(mList.get(position).getTitle());
         holder.itemBiding.fversion.setText(mList.get(position).getVersion());
+
         /*if(mPreviousIndex != -1){
             if(mPreviousIndex==position){
                 holder.itemBiding.fstatusIc.setImageResource(R.drawable.ic_check);
@@ -96,6 +99,7 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
 
                 //notifyItemChanged(position);
                 notifyDataSetChanged();
+
 
                 //SurveyFormViewModel vm = new SurveyFormViewModel()
             }

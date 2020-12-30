@@ -143,17 +143,18 @@ public class SurveyFormViewModel extends AndroidViewModel {
                         //surveyForm.setDownloadDate(null);
                         //repository.insertForm(surveyForm);
 
-                              /*   ix = locallist.indexOf(surveyForm);
+                                ix = locallist.indexOf(surveyForm);
                                  if(ix > -1) {
                                      if (!surveyForm.getVersion().equalsIgnoreCase(locallist.get(ix).getVersion())) {
                                          locallist.get(ix).setIsDownloaded(-1);
-                                         repository.updateForm(locallist.get(ix));
+                                         locallist.get(ix).setNewVersion(surveyForm.getVersion());
+                                         //repository.updateForm(locallist.get(ix));
                                      }
-                                 }*/
+                                 }
 
 
-                             surveyForm.setCountRemote(0);
-                             surveyForm.setCountLocal(0);
+                             //surveyForm.setCountRemote(0);
+                             //surveyForm.setCountLocal(0);
 
                         }
                         list.removeAll(locallist);
@@ -170,14 +171,21 @@ public class SurveyFormViewModel extends AndroidViewModel {
 
     public void insertForm(SurveyForm form) {
         form.setSchema_path(form.getId() + ".json");
+        int isDd = form.getIsDownloaded();
         form.setIsDownloaded(1);
-        form.setCountLocal(0);
-        form.setCountRemote(0);
+        //form.setCountLocal(0);
+        //form.setCountRemote(0);
         DateConverter dt = new DateConverter();
         form.setDownloadDate(dt.getTimeStamp());
         JSONArray formSchema = new JSONArray();
         Toast.makeText(getApplication(),"schema downloaded!",Toast.LENGTH_LONG).show();
-        repository.insertForm(form);
+        if(isDd == -1) {
+            form.setVersion(form.getNewVersion());
+            repository.updateForm(form);
+        }else{
+            repository.insertForm(form);
+        }
+        locallist  = repository.getSurveyForms();
         try{
             JSONArray  js = new JSONArray(form.getFormSchema());
             for(int i =0; i<js.length();i++){
@@ -195,6 +203,7 @@ public class SurveyFormViewModel extends AndroidViewModel {
 
         //getForms();
         //localFormList = repository.getLocalForms();
+
     }
 
     public void saveFormData(SurveyForm sf, String jsonData) throws JSONException {
@@ -214,12 +223,14 @@ public class SurveyFormViewModel extends AndroidViewModel {
 
 
         }
-        sf.setCountLocal(ja.length());
-        repository.updateForm(sf);
+       // sf.setCountLocal(ja.length());
+        //repository.updateForm(sf);
         //int [] dataCount = {ja.length(),0};
         JSONArray dataCount = new JSONArray();
-        dataCount.put(ja.length());
-        dataCount.put(0);
+        int[] dc = getDataCount();
+            dataCount.put(ja.length());
+            dataCount.put(dc[1]);
+
         SaveSharedPreference.addToShared(getApplication(),sf.getId(), dataCount.toString());
         saveFile(ja.toString(), sf.getSchema_path(), 'R');
     }

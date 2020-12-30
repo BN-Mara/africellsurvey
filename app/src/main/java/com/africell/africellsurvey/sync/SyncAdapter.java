@@ -137,7 +137,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
     public void postRequest(String jsonToSend){
         try {
-            URL url = new URL("http://192.168.43.45/jsonmock/server.php/");
+            URL url = new URL("http://10.100.26.65/jsonmock/server.php/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");

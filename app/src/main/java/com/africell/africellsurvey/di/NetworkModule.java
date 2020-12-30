@@ -23,7 +23,7 @@ public class NetworkModule {
                 //10.0.2.2
                 //192.168.43.45
                 //10.100.26.106
-                .baseUrl("http://192.168.43.45/jsonmock/server.php/")
+                .baseUrl("http://10.100.26.65/jsonmock/server.php/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()

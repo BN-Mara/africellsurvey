@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.FormsFragment">
+    tools:context=".ui.fragments.FormsFragment"
+    >
 
     <!-- TODO: Update blank fragment layout -->
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/formRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/formRV"/>
+        android:background="#F8F8F8"/>
 </RelativeLayout>

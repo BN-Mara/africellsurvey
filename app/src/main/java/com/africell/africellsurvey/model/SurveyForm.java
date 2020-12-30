@@ -24,13 +24,14 @@ public class SurveyForm {
     private int isDownloaded = 0;
     private String schema_path;
     private String downloadDate;
-    private int countRemote = 0;
-    private  int countLocal = 0;
+    private String newVersion;
+    //private int countRemote = 0;
+    //private  int countLocal = 0;
     @Ignore
     private JsonArray schemas;
 
     public SurveyForm(String id,String title, String version, String description, int isDownloaded,
-                      String schema_path,String downloadDate,int countLocal,int countRemote){
+                      String schema_path,String downloadDate){
         this.id = id;
         this.title = title;
         this.version = version;
@@ -38,8 +39,8 @@ public class SurveyForm {
         this.isDownloaded = isDownloaded;
         this.schema_path = schema_path;
         this.downloadDate = downloadDate;
-        this.countLocal = countLocal;
-        this.countRemote = countRemote;
+        //this.countLocal = countLocal;
+        //this.countRemote = countRemote;
 
     }
     public String getId(){
@@ -104,7 +105,7 @@ public class SurveyForm {
         return s;
     }
 
-    public int getCountLocal() {
+    /*public int getCountLocal() {
         return countLocal;
     }
 
@@ -118,6 +119,15 @@ public class SurveyForm {
 
     public void setCountRemote(int countRemote) {
         this.countRemote = countRemote;
+    }
+*/
+
+    public void setNewVersion(String newVersion) {
+        this.newVersion = newVersion;
+    }
+
+    public String getNewVersion() {
+        return newVersion;
     }
 
     public void setFormSchema(JsonArray schemas) {

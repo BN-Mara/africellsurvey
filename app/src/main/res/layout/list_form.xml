@@ -10,24 +10,31 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         >
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/statusicone"
+            app:srcCompat="@drawable/ic_form"
+            android:layout_gravity="center"
+            />
 
         <TextView
             android:id="@+id/ftitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="15dp"
             android:layout_weight="2"
             android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#000"/>
 
         <TextView
             android:id="@+id/fversion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text=""
+
+            android:text="1.0"
             android:layout_gravity="center"/>
 
         <ImageView

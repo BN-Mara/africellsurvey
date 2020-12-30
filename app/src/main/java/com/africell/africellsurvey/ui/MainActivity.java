@@ -3,6 +3,7 @@ package com.africell.africellsurvey.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 //import android.app.FragmentManager;
@@ -75,8 +76,9 @@ private SurveyFormViewModel viewModel;
         if(viewModel.getSessionSatus()){
             try {
                 Fragment formFrag = (Fragment) FormsFragment.class.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,formFrag).addToBackStack(null)
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,formFrag)
                         .commit();
+                //replaceFragment(FormsFragment.class);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InstantiationException e) {
@@ -84,8 +86,9 @@ private SurveyFormViewModel viewModel;
             }
 
         }else{
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,new LoginFragment()).addToBackStack(null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,new LoginFragment())
                     .commit();
+            //replaceFragment(LoginFragment.class);
         }
 
 
@@ -97,21 +100,28 @@ private SurveyFormViewModel viewModel;
         }catch(Exception e){
             e.printStackTrace();
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(null)
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(fragment.getClass().getName())
                 .commit();
     }
-    /*public void download(SurveyForm surveyForm){
-        Toast.makeText(getBaseContext(),surveyForm.getTitle(),Toast.LENGTH_LONG).show();
+    public void replaceFragment(Fragment source, Fragment destination){
 
+            //Fragment sce = (Fragment) source.newInstance();
+            //Fragment dst = (Fragment) destination.newInstance();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft=fragmentManager.beginTransaction();
+            ft.add(R.id.frameLayout, destination);
+            ft.hide(source);
+            ft.addToBackStack(source.getClass().getName());
+            ft.commit();
 
+    }
 
-    }*/
 
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
         //Toast.makeText(this, viewModel.getFragment().toString(), Toast.LENGTH_LONG).show();
-
+        //viewModel = new ViewModelProvider(this).get(SurveyFormViewModel.class);
            FragmentManager fm = getSupportFragmentManager();
         int backEntryCount = getSupportFragmentManager().getBackStackEntryCount();
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -120,11 +130,17 @@ private SurveyFormViewModel viewModel;
                 //notify();
                //getSupportFragmentManager().popBackStack();
 
-               Fragment fragment = fm.getFragments().get(0);
-               fragment.onResume();
+              /* Fragment fragment = fm.findFragmentByTag(FormsFragment.class.getName());
+               if(fragment instanceof FormsFragment){
+                   fragment.onResume();
+               }else
+               //fragment.onResume();
                 //viewModel.getForms();
                     //fragment.observeData();
-                getSupportFragmentManager().popBackStack();
+
+               */
+                getSupportFragmentManager().popBackStackImmediate();
+
 
 
             } else {
