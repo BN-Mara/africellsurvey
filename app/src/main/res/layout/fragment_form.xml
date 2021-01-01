@@ -2,173 +2,238 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="#f4f6f9"
     tools:context=".ui.fragments.FormFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:baselineAligned="false"
         android:orientation="horizontal"
-        android:id="@+id/layoutCard"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_weight="0.2">
 
-        <androidx.cardview.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardBackgroundColor="@color/cardview_shadow_end_color"
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="150dp"
+            android:layout_weight="0.02"
+            android:background="#F6F3F3"></RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.96"
             >
+
+            <!-- This is the part that's 70% of the total width. I'm inserting a LinearLayout and buttons.-->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/primary_50"
+                    app:cardElevation="2dp"
+                    android:layout_weight="0.49">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#17a2b8"
+                            android:text="@string/local"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"/>
+
+                        <TextView
+                            android:id="@+id/totalLocal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:text="0"
+                            android:textSize="@dimen/t_36sp"
+                            android:textAlignment="center"
+                            android:background="#22C2DC"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/local"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:id="@+id/totalLocal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d_20dp"
+                    android:layout_weight="0.02"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/primary_50"
+                    app:cardElevation="2dp"
+                    android:layout_weight="0.49">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#28a745"
+                            android:text="@string/remote"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"/>
+
+                        <TextView
+                            android:id="@+id/totalRemote"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:text="0"
+                            android:textSize="@dimen/t_36sp"
+                            android:textAlignment="center"
+                            android:background="#31CA54"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <TextView
-            android:layout_width="30dp"
-            android:layout_height="80dp"/>
-        <androidx.cardview.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            card_view:cardCornerRadius="4dp"
-            card_view:cardBackgroundColor="@color/cardview_shadow_end_color"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/remote"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:id="@+id/totalRemote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+            <!-- 70% Width End-->
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="150dp"
+            android:layout_weight="0.02"
+            android:background="#F6F3F3"></RelativeLayout>
+
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_margin="20dp"
-        >
-
-        <TextView
-            android:id="@+id/ftitle_version"
+        android:layout_weight="0.7">
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:text="@string/test_title"
-            android:textColor="#000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_margin="10dp"
+            android:background="#FFFEFE"
+            app:strokeWidth="1dp"
+            app:cardElevation="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
 
-        <TextView
-            android:id="@+id/descr"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:text="this is a description of form"
-            android:textAlignment="textStart" />
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.09"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/ftitleVersion"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Title of form | 1.0"
+                        android:textColor="#000"
+                        android:textSize="@dimen/t_18sp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <View android:id="@+id/tile_divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/dividerVertical" />
 
-        <TextView
-            android:id="@+id/fdate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:text="03/12/2020"
-            android:textAlignment="textStart"
-            android:textColor="#000000" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/descr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="this is a description"
+                        android:textSize="@dimen/t_18sp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:id="@+id/fdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/d_20dp"
+                        android:text="12/12/2020"
+                        android:textColor="#000"
+                        android:textSize="@dimen/t_18sp"
+                        android:layout_below="@+id/descr"/>
+
+                </RelativeLayout>
+                <View android:id="@+id/tile_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/dividerVertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1"
+                    android:orientation="horizontal"
+
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"/>
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/buton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="@dimen/d_40dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:padding="8dp"
+                        android:text="Go to form"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color_white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:icon="@drawable/ic_add"
+                        app:iconGravity="start"
+                        app:iconTint="@color/color_white" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.1">
+
 
     </LinearLayout>
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="0dp" >
-    </View><LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:layout_gravity="bottom"
-    >
-
-    <Button
-        android:id="@+id/buttonBk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back"
-        android:background="@color/black"
-        android:layout_marginStart="10dp"
-        />
-    <View
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
-
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/buton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to form"
-        app:icon="@drawable/ic_add"
-        app:iconGravity="start"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textColor="@color/color_white"
-        android:backgroundTint="@color/colorPrimary"
-        app:iconTint="@color/color_white"
-        android:layout_gravity="right"
-        android:textSize="16sp"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:layout_marginRight="@dimen/d_40dp"
-        android:layout_marginTop="@dimen/d_32dp"
-        android:layout_marginBottom="@dimen/d_16dp"
-        android:layout_marginLeft="@dimen/d_16dp"/>
-</LinearLayout>
-
-
-
 
 </LinearLayout>

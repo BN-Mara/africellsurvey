@@ -103,7 +103,7 @@ public class FormFragment extends Fragment {
         binding.fdate.setText(viewModel.getCurrentForm().getDownloadDate());
         binding.descr.setText(viewModel.getCurrentForm().getDescription());
         binding.ftitleVersion.setText(viewModel.getCurrentForm().getTitle()+" "+viewModel.getCurrentForm().getVersion());
-        binding.buttonBk.setVisibility(View.INVISIBLE);
+        //binding.buttonBk.setVisibility(View.INVISIBLE);
         if(viewModel.getCurrentForm().getIsDownloaded() == 0){
             binding.buton.setVisibility(View.INVISIBLE);
         }else{
@@ -119,7 +119,7 @@ public class FormFragment extends Fragment {
                 ((MainActivity) requireActivity()).replaceFragment(FillupFragment.class);
             }
         });
-        binding.buttonBk.setOnClickListener(new View.OnClickListener() {
+        /*binding.buttonBk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity) requireActivity()).replaceFragment(FormsFragment.class);
