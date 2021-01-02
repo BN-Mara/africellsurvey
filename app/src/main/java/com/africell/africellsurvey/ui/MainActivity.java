@@ -56,11 +56,15 @@ private SurveyFormViewModel viewModel;
        mAccount = CreateSyncAccount(this);
         // Get the content resolver for your app
        mResolver = getContentResolver();
+        ContentResolver.setMasterSyncAutomatically(true);
         Bundle settingBundle=new Bundle();
+
         settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL,true);
         settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED,true);
         ContentResolver.requestSync(mAccount,AUTHORITY,settingBundle);
         ContentResolver.setSyncAutomatically(mAccount,AUTHORITY,true);
+
+
         /*
          * Turn on periodic syncing
          */

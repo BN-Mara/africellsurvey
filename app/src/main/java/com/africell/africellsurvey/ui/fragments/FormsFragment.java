@@ -85,7 +85,7 @@ public class FormsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        getActivity().setTitle("Survey  forms");
+
     }
 
     @Override
@@ -94,12 +94,7 @@ public class FormsFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_forms, container, false);
         binding = FragmentFormsBinding.inflate(inflater,container,false);
-
-        //viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
-        //initRecyclerView();
-        //observeData();
-        //setUpItemTouchHelper();
-        //viewModel.getForms();
+        getActivity().setTitle("Survey  forms");
         return binding.getRoot();
 
     }
@@ -119,18 +114,6 @@ public class FormsFragment extends Fragment {
    /* @Override
     public void onResume() {
         super.onResume();
-        viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
-        //viewModel.getForms();
-        //adapter.notifyDataSetChanged();
-
-
-        //Toast.makeText(getContext(),"onResume",  Toast.LENGTH_LONG).show();
-        initRecyclerView();
-        observeData();
-        setUpItemTouchHelper();
-        viewModel.getForms();
-        //super.onResume();
-
 
     }*/
 
@@ -145,8 +128,6 @@ public class FormsFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int swipedFormPosition = viewHolder.getAdapterPosition();
                 SurveyForm form = adapter.getFormAt(swipedFormPosition);
-                //view model, download schema
-                //viewModel.insertPokemon(pokemon);
 
                 viewModel.setCurrentForm(form);
                 adapter.notifyDataSetChanged();
@@ -162,17 +143,7 @@ public class FormsFragment extends Fragment {
     }
 
     public void observeData(){
-       /* viewModel.getLocalForms().observe(getViewLifecycleOwner(), new Observer<List<SurveyForm>>() {
-            @Override
-            public void onChanged(List<SurveyForm> surveyForms) {
-                Log.e(TAG, "onChanged: " + surveyForms.size() );
-                if(surveyForms.size() != 0) {
-                    ArrayList<SurveyForm> list = new ArrayList<>(surveyForms);
 
-                    adapter.addToList(list);
-                }
-            }
-        });*/
         adapter.updateList(viewModel.getLocalList());
         viewModel.getFormList().observe(getViewLifecycleOwner(),new Observer<ArrayList<SurveyForm>>() {
             @Override
@@ -207,29 +178,16 @@ public class FormsFragment extends Fragment {
             public void setOnclickLister(SurveyForm sf, int position) {
                 //sf.setIsDownloaded(1);
                 viewModel.insertForm(sf);
+            }
 
-                //formList = viewModel.getLocalList();
-                //viewModel.getFormList().setValue(formList);
-                //viewModel.getForms();
-                //notifyAll();
-                //observeData();
-                //ArrayList<SurveyForm> newlist = adapter.getmList();
-                //newlist.get(position).setIsDownloaded(1);
-                //adapter.updateList(newlist);
-                //adapter.notifyDataSetChanged();
-
-                //adapter.notifyDataSetChanged();
-                //adapter.notifyItemChanged(position);
-
-                //observeData();
-
-                //Toast.makeText(getContext(),sf.getFormSchema(),Toast.LENGTH_LONG).show();
+            @Override
+            public void itemOnclick(SurveyForm sf, int position) {
+                viewModel.setCurrentForm(sf);
+                adapter.notifyDataSetChanged();
+                ((MainActivity) requireActivity()).replaceFragment(FormFragment.class);
             }
         },formList);
-        //adapter.updateList(viewModel.getLocalList());
-        //adapter.notifyDataSetChanged();
         viewModel.getForms();
-        //observeData();
         binding.formRV.setAdapter(adapter);
     }
 

@@ -46,15 +46,16 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
     public void onBindViewHolder(@NonNull FormViewHolder holder, int position) {
         holder.itemBiding.ftitle.setText(mList.get(position).getTitle());
         holder.itemBiding.fversion.setText(mList.get(position).getVersion());
-
-        /*if(mPreviousIndex != -1){
-            if(mPreviousIndex==position){
-                holder.itemBiding.fstatusIc.setImageResource(R.drawable.ic_check);
-                holder.itemBiding.fstatusIc.setEnabled(false);
-                //color on item selecting item
+        holder.itemBiding.fdescription.setText(mList.get(position).getDescription());
+        holder.itemBiding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SurveyForm sf = mList.get(position);
+                if(myOnclikListner != null){
+                    myOnclikListner.itemOnclick(sf,position);
+                }
             }
-
-        }*///else{
+        });
         if(mPreviousIndex==position){
             //mList.get(position).setIsDownloaded(1);
             //notifyDataSetChanged();
@@ -150,7 +151,9 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
     public  SurveyForm getFormAt(int position){
         return mList.get(position);
     }
+
     public interface MyOnclikListner{
         void setOnclickLister(SurveyForm sf,int position);
+        void itemOnclick(SurveyForm sf, int position);
     }
 }

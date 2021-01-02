@@ -85,13 +85,14 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_login, container, false);
         binding = FragmentLoginBinding.inflate(inflater,container,false);
+        getActivity().setTitle("Log in");
         return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
-        getActivity().setTitle("Log in");
+
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -24,16 +24,36 @@
             android:layout_column="0"
             android:layout_marginTop="5dp"
             />
-
-            <TextView
-                android:id="@+id/ftitle"
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
                 android:layout_column="1"
-                android:layout_marginTop="@dimen/d_20dp"
-                android:text="this is a text"
-                android:textAlignment="textStart"
-                android:textColor="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="10dip">
+                <TextView
+                    android:id="@+id/ftitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="this is a text"
+                    android:textAlignment="textStart"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+                <TextView
+                    android:id="@+id/fdescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="this is a description"
+                    android:textSize="10sp"
+                    android:maxLength="40"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
+            </LinearLayout>
+
+
+
 
         <TextView
             android:id="@+id/fversion"

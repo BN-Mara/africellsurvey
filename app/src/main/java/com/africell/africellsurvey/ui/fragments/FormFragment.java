@@ -74,7 +74,7 @@ public class FormFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        getActivity().setTitle("Form detail");
+
     }
 
     @Override
@@ -91,7 +91,7 @@ public class FormFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
-
+        getActivity().setTitle("Form detail");
         displayDetails();
     }
 

@@ -167,11 +167,11 @@ public class CommonUtils {
         jo0.put("type",5);
         js.put(jo0);*/
 
-        JSONObject jo1 = new JSONObject();
+        /*JSONObject jo1 = new JSONObject();
         jo1.put("_id","again_button");
         jo1.put("text","Add again");
         jo1.put("type",9);
-        js.put(jo1);
+        js.put(jo1);*/
         JSONObject jo2 = new JSONObject();
         jo2.put("_id","submit_button");
         jo2.put("text","Submit");

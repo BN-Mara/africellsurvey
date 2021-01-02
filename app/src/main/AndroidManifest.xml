@@ -56,7 +56,8 @@
             android:name=".sync.StubProvider"
             android:authorities="com.africell.africellsurvey.provider"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true"
+            />
     </application>
 
 
