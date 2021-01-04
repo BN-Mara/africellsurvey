@@ -74,8 +74,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String fname = null;
         String id = null;
         if(files != null && files.length > 0) {
-            for (File file : files) {
-                fname = file.getName();
+            for (int i=0;i<files.length; i++) {
+                fname = files[i].getName();
                 if (!fname.contains(".json")) {
                     id = fname;
                     fname = fname + ".json";
@@ -115,7 +115,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     //FormData fd = new FormData(formId,jo);
                     jos = new JSONObject();
                     jos.put("formId", formId);
-                    jos.put("formData", jo);
+                    jos.put("values", jo);
                     jsonInputString = jos.toString();
                     currD = i;
                     int res = postRequest(jsonInputString);
@@ -140,7 +140,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public int postRequest(String jsonToSend){
         int resp =  0;
         try {
-            URL url = new URL("http://192.168.43.199/jsonmock/server.php/");
+            URL url = new URL("http://192.168.43.199:45455/api/app/formData/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");

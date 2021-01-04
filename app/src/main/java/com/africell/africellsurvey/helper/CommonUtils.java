@@ -152,6 +152,7 @@ public class CommonUtils {
                 case "fileUpload":
                     //jo.put("text","Add again");
                     jo.put("type",9);
+                    break;
 
                 default:
                     jo.put("type",1);
