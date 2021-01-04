@@ -1,2 +1,3 @@
+include ':jsontoforms'
 include ':app'
 rootProject.name = "africellsurvey"

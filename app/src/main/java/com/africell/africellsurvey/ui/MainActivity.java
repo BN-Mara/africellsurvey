@@ -11,6 +11,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
@@ -189,4 +190,9 @@ private SurveyFormViewModel viewModel;
         }
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

@@ -71,7 +71,7 @@ public class FormActivity extends AppCompatActivity implements JsonToFormClickLi
     }
 
     @Override
-    public void onAddAgainButtonClick() {
+    public void onAddAgainButtonClick(int position) {
         Toast.makeText(this, "Add again button click", Toast.LENGTH_SHORT).show();
     }
 

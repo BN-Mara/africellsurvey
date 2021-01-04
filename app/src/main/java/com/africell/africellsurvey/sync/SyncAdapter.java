@@ -118,8 +118,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     jos.put("formData", jo);
                     jsonInputString = jos.toString();
                     currD = i;
-                    postRequest(jsonInputString);
-                    sent(formId, ja);
+                    int res = postRequest(jsonInputString);
+                    if (res == 200) {
+                        sent(formId, ja);
+                    }
                /* repository.sendData(fd)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -135,7 +137,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
         }
     }
-    public void postRequest(String jsonToSend){
+    public int postRequest(String jsonToSend){
+        int resp =  0;
         try {
             URL url = new URL("http://192.168.43.199/jsonmock/server.php/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -152,10 +155,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             Log.i("STATUS", String.valueOf(con.getResponseCode()));
             Log.i("MSG" , con.getResponseMessage());
+            resp = con.getResponseCode();
 
         }catch (Exception e){
             e.printStackTrace();
         }
+        return resp;
     }
 
     private void sent(String formId, JSONArray ja) {

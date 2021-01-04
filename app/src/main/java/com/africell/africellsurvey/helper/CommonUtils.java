@@ -149,6 +149,9 @@ public class CommonUtils {
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     break;
+                case "fileUpload":
+                    //jo.put("text","Add again");
+                    jo.put("type",9);
 
                 default:
                     jo.put("type",1);
@@ -167,7 +170,7 @@ public class CommonUtils {
         jo0.put("type",5);
         js.put(jo0);*/
 
-        /*JSONObject jo1 = new JSONObject();
+       /* JSONObject jo1 = new JSONObject();
         jo1.put("_id","again_button");
         jo1.put("text","Add again");
         jo1.put("type",9);

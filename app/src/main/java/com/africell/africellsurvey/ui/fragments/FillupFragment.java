@@ -1,6 +1,8 @@
 package com.africell.africellsurvey.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ import com.africell.africellsurvey.databinding.ActivityFormBinding;
 import com.africell.africellsurvey.databinding.FragmentFillupBinding;
 import com.africell.africellsurvey.databinding.FragmentFormBinding;
 import com.africell.africellsurvey.helper.CommonUtils;
+import com.africell.africellsurvey.helper.ImageConverter;
+import com.africell.africellsurvey.helper.ImagePicker;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,6 +35,7 @@ import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
 import com.shamweel.jsontoforms.models.JSONModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
 import com.shamweel.jsontoforms.validate.CheckFieldValidations;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +66,8 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
     FormAdapter mAdapter;
     List<JSONModel> jsonModelList = new ArrayList<>();
     private  String DATA_JSON_PATH;
+    private int imagePosition;
+    private static final int PICK_IMAGE_ID = 234;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -136,8 +143,11 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
     }
 
     @Override
-    public void onAddAgainButtonClick() {
-        Toast.makeText(getContext(), "Add again button click", Toast.LENGTH_SHORT).show();
+    public void onAddAgainButtonClick(int position) {
+        //Toast.makeText(getContext(), "Add again button click", Toast.LENGTH_SHORT).show();
+        imagePosition = position;
+        Intent chooseImageIntent = ImagePicker.getPickImageIntent(requireActivity());
+        startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
 
     }
 
@@ -171,5 +181,22 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         }
 
 
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //if(data != null)
+
+        if (requestCode == PICK_IMAGE_ID && resultCode == Activity.RESULT_OK) {
+
+            Bitmap bitmap = ImagePicker.getImageFromResult(requireActivity(), resultCode, data);
+            // TODO use bitmap
+            //Toast.makeText(this,bitmap.toString(),Toast.LENGTH_LONG).show();
+            String base64String = ImageConverter.convert(bitmap);
+            //Toast.makeText(requireActivity(), base64String, Toast.LENGTH_LONG).show();
+            DataValueHashMap.put(jsonModelList.get(imagePosition).getId(), base64String);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
