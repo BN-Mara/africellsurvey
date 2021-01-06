@@ -140,7 +140,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public int postRequest(String jsonToSend){
         int resp =  0;
         try {
-            URL url = new URL("http://192.168.43.199:45455/api/app/formData/");
+            URL url = new URL("http://10.100.26.65:45455/api/app/formData/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");

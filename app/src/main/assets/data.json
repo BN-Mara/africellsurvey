@@ -17,8 +17,8 @@
     "_id": "edittext_2",
     "text": "Hi! I'm edittext(Enter Numbers Decimal)",
     "hint": "Hi! I'm edittext(Enter Numbers Decimal)",
-    "input_type": "numbers_decimal",
-    "max_length": 7,
+    "input_type": "",
+    "max_lengt": 7,
     "type": 2
   },
   {

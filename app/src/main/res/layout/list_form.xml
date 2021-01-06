@@ -23,6 +23,7 @@
             android:layout_gravity="center"
             android:layout_column="0"
             android:layout_marginTop="5dp"
+
             />
             <LinearLayout
                 android:layout_height="match_parent"
@@ -63,14 +64,16 @@
             android:padding="10dip"
             android:layout_marginTop="5dp"/>
 
-        <ImageView
-            android:id="@+id/fstatus_ic"
-            android:contentDescription="@string/statusicone"
-            app:srcCompat="@android:drawable/stat_sys_download"
-            android:layout_gravity="center"
-            android:layout_column="3"
-            android:padding="10dip"
-            android:layout_marginTop="5dp"/>
+            <ImageView
+                android:id="@+id/fstatus_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:contentDescription="@string/statusicone"
+                android:padding="10dip"
+                app:srcCompat="@android:drawable/stat_sys_download" />
         </TableRow>
     </TableLayout>
 </androidx.cardview.widget.CardView>

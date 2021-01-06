@@ -12,6 +12,7 @@ import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
@@ -64,7 +65,6 @@ private SurveyFormViewModel viewModel;
         settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED,true);
         ContentResolver.requestSync(mAccount,AUTHORITY,settingBundle);
         ContentResolver.setSyncAutomatically(mAccount,AUTHORITY,true);
-
 
         /*
          * Turn on periodic syncing

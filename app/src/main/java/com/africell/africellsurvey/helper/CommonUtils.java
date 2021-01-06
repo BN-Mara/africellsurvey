@@ -89,16 +89,16 @@ public class CommonUtils {
                 case "text":
                     jo.put("type",2);
                     jo.put("input_type","text");
-                    jo.put("max_length",50);
-                    jo.put("hint",json.getJSONObject(i).getString("placeholder"));
+                    jo.put("max_length",255);
+                    jo.put("hint",json.getJSONObject(i).getString("label"));
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     break;
                 case "number":
                     jo.put("type",2);
-                    jo.put("input_type","numbers");
-                    jo.put("max_length",10);
-                    jo.put("hint",json.getJSONObject(i).getString("placeholder"));
+                    jo.put("input_type","text");
+                    jo.put("max_length",255);
+                    jo.put("hint",json.getJSONObject(i).getString("label"));
 
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
@@ -114,7 +114,7 @@ public class CommonUtils {
                         jsList.put(joList);
                     }
                     jo.put("list",jsList);
-                    jo.put("hint",json.getJSONObject(i).getString("placeholder"));
+                    jo.put("hint",json.getJSONObject(i).getString("label"));
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     jo.put("type",4);
@@ -130,7 +130,7 @@ public class CommonUtils {
                     break;
                 case "inputCheckbox":
                     jo.put("type",7);
-                    jo.put("hint",json.getJSONObject(i).getString("placeholder"));
+                    jo.put("hint",json.getJSONObject(i).getString("label"));
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     break;
