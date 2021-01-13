@@ -73,7 +73,7 @@ private SurveyFormViewModel viewModel;
                 mAccount,
                 AUTHORITY,
                 Bundle.EMPTY,
-                30);
+                10);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(SurveyFormViewModel.class);

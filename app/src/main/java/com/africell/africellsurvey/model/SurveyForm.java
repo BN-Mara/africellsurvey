@@ -21,7 +21,7 @@ public class SurveyForm {
     private String title;
     private String version;
     private String description;
-    private int isDownloaded = 0;
+    private int isDownloaded;
     private String schema_path;
     private String downloadDate;
     private String newVersion;

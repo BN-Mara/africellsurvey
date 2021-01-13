@@ -8,13 +8,14 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.africell.africellsurvey.db.SurveyFormDao;
 import com.africell.africellsurvey.helper.SaveSharedPreference;
 import com.africell.africellsurvey.model.FormData;
+import com.africell.africellsurvey.model.FormDataResponse;
 import com.africell.africellsurvey.model.SurveyForm;
-import com.africell.africellsurvey.repository.Repository;
+import com.africell.africellsurvey.network.ApiService;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,19 +27,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.Scheduler;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 //@AndroidEntryPoint
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
@@ -51,11 +48,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private List<SurveyForm> surveyForms;
 
     Context mContext;
-    @Inject
+    ApiService retrofit = null;
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         contentResolver = context.getContentResolver();
         this.mContext = context;
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.100.26.103:45455/api/app/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(ApiService.class);
     }
 
 
@@ -68,8 +70,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(TAG,"onperform sync start");
+        //Log.d(TAG,"onperform sync start");
        // List<SurveyForm> surveyFormList = repository.getSurveyForms();
+        System.out.print("inside onperform");
         File[] files = loadAllFormFile("data");
         String fname = null;
         String id = null;
@@ -102,7 +105,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public void sendData(String formId, String json){
-        //send each object containing form value, and remove it
+        //send each object containing form value, and remove
+        System.out.print("inside sendData");
 
         String jsonInputString = null;
         JSONObject jos;
@@ -118,8 +122,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     jos.put("values", jo);
                     jsonInputString = jos.toString();
                     currD = i;
-                    int res = postRequest(jsonInputString);
-                    if (res == 200) {
+                    Log.i("FORM_ID",formId);
+                    Log.i("VALUES",jos.toString());
+                   int res = postRequest(formId,jo);
+                    if (res == 1) {
                         sent(formId, ja);
                     }
                /* repository.sendData(fd)
@@ -137,17 +143,47 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
         }
     }
-    public int postRequest(String jsonToSend){
+    public int postRequest(String formId, JSONObject jo){
+        System.out.println("inside postRequest");
         int resp =  0;
         try {
-            URL url = new URL("http://10.100.26.65:45455/api/app/formData/");
+            Gson gs = new Gson();
+            FormData fd = new FormData(formId,gs.fromJson(jo.toString(),JsonObject.class));
+            Call<FormDataResponse> call = retrofit.sendFormData(fd);
+            try{
+                Response<FormDataResponse> rs = call.execute();
+                if(rs.isSuccessful() && rs.body().getId()  != null && !rs.body().getId().isEmpty()){
+                    resp = 1;
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            /*call.enqueue(new Callback<FormDataResponse>() {
+                @Override
+                public void onResponse(retrofit2.Call<FormDataResponse> call, retrofit2.Response<FormDataResponse> response) {
+                    //Toast.makeText(MainActivity.this, response.body().result, Toast.LENGTH_LONG).show();
+                    Log.i("RESPONSE",response.body().getFormId());
+                    sent(response.body().getFormId(), ja);
+                }
+
+                @Override
+                public void onFailure(retrofit2.Call<FormDataResponse> call, Throwable t) {
+                   // Toast.makeText(MainActivity.this, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    Log.i("RESPONSE",t.getMessage());
+                }
+            });*/
+
+          /*  URL url = new URL("http://192.168.43.199/jsonmock/server.php/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
             con.setDoOutput(true);
             DataOutputStream os = new DataOutputStream(con.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+            //os.writeBytes(URLEncoder.encode(jsonToSend, "UTF-8"));
+            Log.i("JSONTOSEND",jsonToSend);
             os.writeBytes(jsonToSend);
 
             os.flush();
@@ -155,7 +191,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             Log.i("STATUS", String.valueOf(con.getResponseCode()));
             Log.i("MSG" , con.getResponseMessage());
-            resp = con.getResponseCode();
+            resp = con.getResponseCode();*/
 
         }catch (Exception e){
             e.printStackTrace();
@@ -171,7 +207,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try{
             JSONArray ja1 = new JSONArray(dataCount);
 
-            ja2.put(ja1.getInt(0) - 1);
+            ja2.put(ja.length());
             ja2.put(ja1.getInt(1) + 1);
         }catch(JSONException e){
             e.printStackTrace();

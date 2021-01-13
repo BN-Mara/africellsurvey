@@ -82,8 +82,10 @@ public class CommonUtils {
 
                 jo.put("_id", key);
                 jo.put("text",json.getJSONObject(i).getString("label"));
+                //jo.put("condition",json.getJSONObject(i).getString("label"));
 
             }
+            //jo.put("name",json.getJSONObject(i).getString("name"));
 
             switch(json.getJSONObject(i).getString("typeField")){
                 case "text":
@@ -96,8 +98,8 @@ public class CommonUtils {
                     break;
                 case "number":
                     jo.put("type",2);
-                    jo.put("input_type","text");
-                    jo.put("max_length",255);
+                    jo.put("input_type","");
+                    jo.put("max_length",10);
                     jo.put("hint",json.getJSONObject(i).getString("label"));
 
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
@@ -133,6 +135,22 @@ public class CommonUtils {
                     jo.put("hint",json.getJSONObject(i).getString("label"));
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
+                    break;
+                case "inputCheckboxx":
+                    JSONArray jsList2= new JSONArray();
+                    JSONArray options2 = json.getJSONObject(i).getJSONArray("options");
+                    JSONObject joList2 = null;
+                    for(int j = 0; j < options2.length(); j++){
+                        joList2 = new JSONObject();
+                        joList2.put("index",j);
+                        joList2.put("index_text",options2.getJSONObject(j).getString("label"));
+                        jsList2.put(joList2);
+                    }
+                    jo.put("list",jsList2);
+                    jo.put("hint",json.getJSONObject(i).getString("label"));
+                    jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
+
+                    jo.put("type",11);
                     break;
                 case "select":
                     JSONArray jsList1= new JSONArray();

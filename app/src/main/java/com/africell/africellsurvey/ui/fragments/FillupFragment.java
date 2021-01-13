@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,16 @@ import com.africell.africellsurvey.helper.CommonUtils;
 import com.africell.africellsurvey.helper.DateConverter;
 import com.africell.africellsurvey.helper.ImageConverter;
 import com.africell.africellsurvey.helper.ImagePicker;
+import com.africell.africellsurvey.helper.LocationFinder;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shamweel.jsontoforms.adapters.FormAdapter;
@@ -50,9 +60,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +73,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-public class FillupFragment extends Fragment implements JsonToFormClickListener{
+public class FillupFragment extends Fragment implements JsonToFormClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,8 +90,13 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
     private int imagePosition;
     private static final int PICK_IMAGE_ID = 234;
     private static final int REQUEST_LOCATION = 123;
-    double longitude,latitude;
+    double longitude, latitude;
     String startTime, endTime;
+    private int itemPosition = 0;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
+    double longitudeX = 0.0, latitudeX = 0.0;
 
 
     // TODO: Rename and change types of parameters
@@ -115,6 +133,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
     @Override
@@ -124,7 +143,10 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
         //return inflater.inflate(R.layout.fragment_fillup, container, false);
         binding = FragmentFillupBinding.inflate(inflater, container, false);
         setLocation();
+        mFusedLocationClient = getFusedLocationProviderClient(getActivity());
+
         return binding.getRoot();
+
 
     }
 
@@ -133,6 +155,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
         getActivity().setTitle(viewModel.getCurrentForm().getTitle());
+        mFusedLocationClient = getFusedLocationProviderClient(getActivity());
         DataValueHashMap.init();
         initRecyclerView();
         fetchData();
@@ -151,14 +174,83 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
     }
 
     private void initRecyclerView() {
+        itemPosition = 0;
         startTime = new DateConverter().getTimeStamp();
+        setLocation();
         mAdapter = new FormAdapter(jsonModelList, getContext(), this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 
 
         binding.recyclerview2.setLayoutManager(layoutManager);
         binding.recyclerview2.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerview2.setAdapter(mAdapter);
+       /* binding.backBtn.setVisibility(View.INVISIBLE);
+        binding.submitBtn.setVisibility(View.GONE);
+        if(mAdapter.getItemCount()  > 1){
+            binding.nextBtn.setVisibility(View.VISIBLE);
+        }
+        binding.recyclerview2.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!binding.recyclerview2.canScrollHorizontally(1))
+                {
+                    binding.nextBtn.setVisibility(View.GONE);
+                    binding.submitBtn.setVisibility(View.VISIBLE);
+
+                }else{
+                    binding.nextBtn.setVisibility(View.VISIBLE);
+                    binding.submitBtn.setVisibility(View.GONE);
+                }
+                if(!binding.recyclerview2.canScrollHorizontally(-1)){
+
+                    binding.backBtn.setVisibility(View.INVISIBLE);
+                }else{
+                    binding.backBtn.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+            }
+        });
+
+        binding.nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.recyclerview2.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        itemPosition += 1;
+                        if(itemPosition < mAdapter.getItemCount()) {
+                            binding.recyclerview2.smoothScrollToPosition(itemPosition);
+                        }else{
+
+                        }
+                    }
+                });
+
+            }
+        });
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemPosition -= 1;
+                if(itemPosition >= 0) {
+                    binding.recyclerview2.smoothScrollToPosition(itemPosition);
+                }else{
+
+                }
+            }
+        });
+        binding.submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleSubmit();
+            }
+        });*/
 
     }
 
@@ -171,7 +263,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
 
     }
 
-    public void setLocation(){
+    public void setLocation() {
         //googleMap.setMyLocationEnabled(true);
         //googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         LocationManager locationManager = (LocationManager) requireActivity().getSystemService(getContext().LOCATION_SERVICE);
@@ -183,51 +275,54 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            requestPermissions(new  String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
 
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-            },REQUEST_LOCATION);
-           // return;
-        }else {
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location == null){
-                final LocationListener locationListener = new LocationListener() {
-                    @Override
-                    public void onLocationChanged(@NonNull Location location) {
-                        longitude = location.getLongitude();
-                        latitude = location.getLatitude();
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(@NonNull String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(@NonNull String provider) {
-
-                    }
-                };
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
-            }else {
-
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
+            }, REQUEST_LOCATION);
+            // return;
+        } else {
+            LocationFinder finder;
+            finder = new LocationFinder(getContext());
+            if (finder.canGetLocation()) {
+                latitudeX = finder.getLatitude();
+                longitudeX = finder.getLongitude();
+                //Toast.makeText(getContext(), "lat-lng " + latitude + " — " + longitude, Toast.LENGTH_LONG).show();
+            } else {
+                finder.showSettingsAlert();
             }
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+            mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(getActivity(),location -> {
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    //txtLocation.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
+                }
+            });
+           /*mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), location -> {
+                if (location != null) {
+                    latitude = location.getLatitude();
+                     longitude = location.getLongitude();
+                    //txtLocation.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+               @Override
+               public void onFailure(@NonNull Exception e) {
+                   Log.i("MapDemoActivity", "Error trying to get last GPS location");
+                   e.printStackTrace();
+               }
+           });*/
+
+
         }
     }
 
     @Override
     public void onSubmitButtonClick() {
+        handleSubmit();
+    }
+
+    public void handleSubmit() {
         if (!CheckFieldValidations.isFieldsValidated(binding.recyclerview2, jsonModelList)) {
             Toast.makeText(getContext(), "Validation Failed", Toast.LENGTH_SHORT).show();
             return;
@@ -237,15 +332,15 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
         //DataValueHashMap.put("latitude",latitude);
         //DataValueHashMap.put()
 
-            endTime = new DateConverter().getTimeStamp();
+        endTime = new DateConverter().getTimeStamp();
 
         //Combined Data
         JSONObject jsonObject = new JSONObject(DataValueHashMap.dataValueHashMap);
         try {
-            jsonObject.put("latitude",latitude);
-            jsonObject.put("longitude",longitude);
-            jsonObject.put("startTime",startTime);
-            jsonObject.put("endTime",endTime);
+            jsonObject.put("latitude", latitude);
+            jsonObject.put("longitude", longitude);
+            jsonObject.put("startTime", startTime);
+            jsonObject.put("endTime", endTime);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -260,11 +355,17 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
             Log.d(key, value);
 
         }*/
-        Toast.makeText(getContext(), "success", Toast.LENGTH_SHORT).show();
+        Log.i("LatitudeX",Double.toString(latitudeX));
+        Log.i("LongitudeX",Double.toString(longitudeX));
+        Log.i("Latitude",Double.toString(latitude));
+        Log.i("longitude",Double.toString(longitude));
+        Toast.makeText(getContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
         try {
-            viewModel.saveFormData(viewModel.getCurrentForm(),jsonObject.toString());
+            viewModel.saveFormData(viewModel.getCurrentForm(), jsonObject.toString());
             //fetchData();
+            //setLocation();
             DataValueHashMap.init();
+
             initRecyclerView();
             //fetchData();
         } catch (JSONException e) {
@@ -273,6 +374,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
 
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -297,7 +399,9 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener{
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                //System.out.println("Location permissions granted, starting location");
+                DataValueHashMap.init();
+                initRecyclerView();
+                //fetchData();
 
             }
         }

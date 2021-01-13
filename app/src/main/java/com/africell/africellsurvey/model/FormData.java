@@ -1,13 +1,15 @@
 package com.africell.africellsurvey.model;
 
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class FormData {
     private String formId;
-    private JSONObject result;
-    public FormData(String formId, JSONObject result){
+    private JsonObject values;
+    public FormData(String formId, JsonObject values){
         this.formId = formId;
-        this.result = result;
+        this.values = values;
     }
 }

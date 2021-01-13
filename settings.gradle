@@ -1,3 +1,5 @@
+include ':checkboxgroup'
+include ':checkboxlibrary'
 include ':jsontoforms'
 include ':app'
 rootProject.name = "africellsurvey"

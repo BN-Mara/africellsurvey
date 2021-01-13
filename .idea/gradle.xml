@@ -12,6 +12,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/checkboxgroup" />
+            <option value="$PROJECT_DIR$/checkboxlibrary" />
             <option value="$PROJECT_DIR$/jsontoforms" />
           </set>
         </option>

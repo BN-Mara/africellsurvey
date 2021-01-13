@@ -29,9 +29,9 @@ public class Repository {
         return apiService.getForms();
 
     }
-    public Observable<FormDataResponse> sendData(FormData formData){
+    /*public Observable<FormDataResponse> sendData(FormData formData){
         return apiService.sendFormData(formData);
-    }
+    }*/
     public List<SurveyForm> getSurveyForms(){
        return surveyFormDao.getLocalForms();
     }

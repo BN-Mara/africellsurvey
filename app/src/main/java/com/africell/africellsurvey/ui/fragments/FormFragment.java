@@ -1,6 +1,7 @@
 package com.africell.africellsurvey.ui.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-public class FormFragment extends Fragment {
+public class FormFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,13 +94,17 @@ public class FormFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
         getActivity().setTitle("Form detail");
         displayDetails();
-    }
 
-    public void displayDetails(){
+    }
+    public void displayInfo(){
         int[] dataCount = viewModel.getDataCount();
 
         binding.totalLocal.setText(""+dataCount[0]);
         binding.totalRemote.setText(""+dataCount[1]);
+    }
+
+    public void displayDetails(){
+        displayInfo();
         binding.fdate.setText(viewModel.getCurrentForm().getDownloadDate());
         binding.descr.setText(viewModel.getCurrentForm().getDescription());
         binding.ftitleVersion.setText(viewModel.getCurrentForm().getTitle()+" "+viewModel.getCurrentForm().getVersion());
@@ -134,5 +139,10 @@ public class FormFragment extends Fragment {
 
 
 
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        displayInfo();
     }
 }

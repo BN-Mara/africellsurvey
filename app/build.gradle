@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
 }
+//apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
@@ -82,6 +83,13 @@ dependencies {
 
     //implementation 'com.github.MohdShamweel:JsonToForms:0.1.0'
     implementation project(':jsontoforms')
+    //checkboxgroup
+    //implementation 'com.github.praveen2gemini:CheckBoxGroup:0.0.2-SNAPSHOT@aar'
+    //implementation 'com.xeoh.android:checkboxgroup:1.0.1'
+    //implementation project(':checkboxgroup')
+
+    //location
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 
 
     implementation 'androidx.appcompat:appcompat:1.2.0'

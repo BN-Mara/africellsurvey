@@ -1,49 +1,44 @@
 package com.africell.africellsurvey.model;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class FormDataResponse {
-    private  Integer totalCount;
-    private String next,previous;
-    private ArrayList<FormData> items;
+    //private  Integer totalCount;
+    private String id,formId;
+    private JsonObject values;
 
-    public FormDataResponse(Integer totalCount,String next, String previous, ArrayList<FormData>items){
-        this.totalCount =totalCount;
-        this.next = next;
-        this.previous = previous;
-        this.items =items;
+    public FormDataResponse(String id, String formId, JsonObject values){
+        this.id =id;
+        this.formId = formId;
+        this.values = values;
 
     }
 
-    public Integer getCount() {
-        return totalCount;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setCount(Integer count) {
-        this.totalCount = count;
+    public String getId() {
+        return id;
     }
 
-    public String getNext() {
-        return next;
+    public void setFormId(String formId) {
+        this.formId = formId;
     }
 
-    public void setNext(String next) {
-        this.next = next;
+    public String getFormId() {
+        return formId;
     }
 
-    public String getPrevious() {
-        return previous;
+    public void setValues(JsonObject values) {
+        this.values = values;
     }
 
-    public void setPrevious(String previous) {
-        this.previous = previous;
-    }
-
-    public ArrayList<FormData> getResults() {
-        return items;
-    }
-
-    public void setResults(ArrayList<FormData> results) {
-        this.items = results;
+    public JsonObject getValues() {
+        return values;
     }
 }

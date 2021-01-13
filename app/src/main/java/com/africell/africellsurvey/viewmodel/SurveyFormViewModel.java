@@ -148,7 +148,12 @@ public class SurveyFormViewModel extends AndroidViewModel {
                                      if (!surveyForm.getVersion().equalsIgnoreCase(locallist.get(ix).getVersion())) {
                                          locallist.get(ix).setIsDownloaded(-1);
                                          locallist.get(ix).setNewVersion(surveyForm.getVersion());
-                                         //repository.updateForm(locallist.get(ix));
+                                         //locallist.remove(ix);
+                                         //surveyForm.setIsDownloaded(-1);
+                                         Gson gs  = new Gson();
+                                         locallist.get(ix).setFormSchema(gs.fromJson(surveyForm.getFormSchema(),JsonArray.class));
+                                         repository.updateForm(locallist.get(ix));
+
                                      }
                                  }
 
@@ -185,7 +190,7 @@ public class SurveyFormViewModel extends AndroidViewModel {
         }else{
             repository.insertForm(form);
         }
-        locallist  = repository.getSurveyForms();
+
         try{
             JSONArray  js = new JSONArray(form.getFormSchema());
             for(int i =0; i<js.length();i++){
@@ -203,6 +208,7 @@ public class SurveyFormViewModel extends AndroidViewModel {
 
         //getForms();
         //localFormList = repository.getLocalForms();
+        locallist  = repository.getSurveyForms();
 
     }
 
