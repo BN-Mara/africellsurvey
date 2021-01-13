@@ -226,7 +226,7 @@
                         android:textColor="@color/color_white"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:icon="@android:drawable/ic_menu_add"
+                        app:icon="@android:drawable/ic_input_add"
                         app:iconGravity="start"
 
                         app:iconTint="@color/color_white"

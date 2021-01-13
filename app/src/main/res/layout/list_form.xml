@@ -23,6 +23,7 @@
             android:layout_gravity="center"
             android:layout_column="0"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
 
             />
             <LinearLayout
@@ -41,13 +42,14 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:ellipsize="end"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:maxLength="30"/>
                 <TextView
                     android:id="@+id/fdescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="this is a description"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     android:maxLength="40"
                     android:ellipsize="end"
                     android:maxLines="1"/>
@@ -61,7 +63,7 @@
             android:text="1.0"
             android:layout_gravity="center"
             android:layout_column="2"
-            android:padding="10dip"
+            android:padding="5dip"
             android:layout_marginTop="5dp"/>
 
             <ImageView
