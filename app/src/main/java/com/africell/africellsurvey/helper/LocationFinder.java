@@ -10,12 +10,17 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 public class LocationFinder extends Service implements LocationListener {
     Context context;
@@ -60,6 +65,7 @@ public class LocationFinder extends Service implements LocationListener {
         return null;
     }
 
+
     public Location getLocation() {
         try {
             locationManager = (LocationManager) context
@@ -99,6 +105,19 @@ public class LocationFinder extends Service implements LocationListener {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
                         }
+
+                       /* locationManager.getCurrentLocation(LocationManager.NETWORK_PROVIDER, null, new Executor() {
+                            @Override
+                            public void execute(Runnable command) {
+
+
+                            }
+                        }, new Consumer<Location>() {
+                            @Override
+                            public void accept(Location location) {
+                            }
+                        });*/
+
                     }
                 } else
                     // if GPS Enabled get lat/long using GPS Services

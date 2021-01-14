@@ -90,7 +90,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
     private int imagePosition;
     private static final int PICK_IMAGE_ID = 234;
     private static final int REQUEST_LOCATION = 123;
-    double longitude, latitude;
+    double longitude =  0.0, latitude  = 0.0;
     String startTime, endTime;
     private int itemPosition = 0;
     private FusedLocationProviderClient mFusedLocationClient;
@@ -170,6 +170,9 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         jsonModelList1 = new Gson().fromJson(json, new TypeToken<List<JSONModel>>() {
         }.getType());
         jsonModelList.addAll(jsonModelList1);
+        for( JSONModel jsonModel : jsonModelList1){
+            DataValueHashMap.put(jsonModel.getId(),"");
+        }
         mAdapter.notifyDataSetChanged();
     }
 
@@ -281,6 +284,22 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
             }, REQUEST_LOCATION);
             // return;
         } else {
+
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+            mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(getActivity(),location -> {
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    //txtLocation.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.i("MapDemoActivity", "Error trying to get last GPS location");
+                    e.printStackTrace();
+                }
+            });
             LocationFinder finder;
             finder = new LocationFinder(getContext());
             if (finder.canGetLocation()) {
@@ -290,15 +309,6 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
             } else {
                 finder.showSettingsAlert();
             }
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-            mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(getActivity(),location -> {
-                if (location != null) {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    //txtLocation.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
-                }
-            });
            /*mFusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), location -> {
                 if (location != null) {
                     latitude = location.getLatitude();
@@ -335,8 +345,13 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         endTime = new DateConverter().getTimeStamp();
 
         //Combined Data
+
         JSONObject jsonObject = new JSONObject(DataValueHashMap.dataValueHashMap);
         try {
+            if(longitude == 0.0 && latitude == 0.0){
+                longitude = longitudeX;
+                latitude  = latitudeX;
+            }
             jsonObject.put("latitude", latitude);
             jsonObject.put("longitude", longitude);
             jsonObject.put("startTime", startTime);
@@ -359,7 +374,8 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         Log.i("LongitudeX",Double.toString(longitudeX));
         Log.i("Latitude",Double.toString(latitude));
         Log.i("longitude",Double.toString(longitude));
-        Toast.makeText(getContext(), jsonObject.toString(), Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(getContext(), "success!", Toast.LENGTH_SHORT).show();
         try {
             viewModel.saveFormData(viewModel.getCurrentForm(), jsonObject.toString());
             //fetchData();
