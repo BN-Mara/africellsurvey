@@ -26,12 +26,6 @@ public class CommonUtils {
     public static String loadJSONFromAsset(Context context, String fileName){
         String json = null;
         try {
-            /*InputStream is = context.getAssets().open(fileName);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");*/
 
             File file = new File(context.getFilesDir(),"schemas/"+fileName);
 
@@ -82,7 +76,11 @@ public class CommonUtils {
 
                 jo.put("_id", key);
                 jo.put("text",json.getJSONObject(i).getString("label"));
-                //jo.put("condition",json.getJSONObject(i).getString("label"));
+                if(!json.getJSONObject(i).getString("typeField").equalsIgnoreCase("inputCheckbox"))
+                {
+                    jo.put("condition",json.getJSONObject(i).getString("condition"));
+                    jo.put("name",json.getJSONObject(i).getString("name"));
+                }
 
             }
             //jo.put("name",json.getJSONObject(i).getString("name"));
@@ -113,6 +111,7 @@ public class CommonUtils {
                         joList = new JSONObject();
                         joList.put("index",j);
                         joList.put("index_text",options.getJSONObject(j).getString("label"));
+                        joList.put("indexValue",options.getJSONObject(j).getString("value"));
                         jsList.put(joList);
                     }
                     jo.put("list",jsList);
@@ -144,6 +143,7 @@ public class CommonUtils {
                         joList2 = new JSONObject();
                         joList2.put("index",j);
                         joList2.put("index_text",options2.getJSONObject(j).getString("label"));
+                        joList2.put("indexValue",options2.getJSONObject(j).getString("value"));
                         jsList2.put(joList2);
                     }
                     jo.put("list",jsList2);
@@ -160,6 +160,7 @@ public class CommonUtils {
                         joList1 = new JSONObject();
                         joList1.put("index",k);
                         joList1.put("index_text",options1.getJSONObject(k).getString("label"));
+                        joList1.put("indexValue",options1.getJSONObject(k).getString("value"));
                         jsList1.put(joList1);
                     }
                     jo.put("list",jsList1);
@@ -197,6 +198,8 @@ public class CommonUtils {
         JSONObject jo2 = new JSONObject();
         jo2.put("_id","submit_button");
         jo2.put("text","Submit");
+        jo2.put("name","submit_button");
+        jo2.put("condition","");
         jo2.put("type",10);
         js.put(jo2);
 

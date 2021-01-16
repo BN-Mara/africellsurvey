@@ -1,10 +1,8 @@
 package com.africell.africellsurvey.ui.fragments;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,18 +11,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.africell.africellsurvey.R;
 import com.africell.africellsurvey.databinding.FragmentFormBinding;
-import com.africell.africellsurvey.databinding.FragmentFormsBinding;
-import com.africell.africellsurvey.model.SurveyForm;
-import com.africell.africellsurvey.ui.FormActivity;
 import com.africell.africellsurvey.ui.MainActivity;
-import com.africell.africellsurvey.ui.SchemasActivity;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
 
-import dagger.hilt.EntryPoint;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**

@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.africell.africellsurvey.R;
-import com.africell.africellsurvey.databinding.ActivityFormBinding;
 import com.africell.africellsurvey.databinding.FragmentFillupBinding;
-import com.africell.africellsurvey.databinding.FragmentFormBinding;
 import com.africell.africellsurvey.helper.CommonUtils;
 import com.africell.africellsurvey.helper.DateConverter;
 import com.africell.africellsurvey.helper.ImageConverter;
@@ -40,10 +34,7 @@ import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -52,16 +43,14 @@ import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
 import com.shamweel.jsontoforms.models.JSONModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
 import com.shamweel.jsontoforms.validate.CheckFieldValidations;
+import com.shamweel.jsontoforms.validate.DynamicFields;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -182,8 +171,6 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         setLocation();
         mAdapter = new FormAdapter(jsonModelList, getContext(), this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-
-
         binding.recyclerview2.setLayoutManager(layoutManager);
         binding.recyclerview2.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerview2.setAdapter(mAdapter);
@@ -332,8 +319,16 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         handleSubmit();
     }
 
+    @Override
+    public void showHideField(String name,String action) {
+        if(action.equalsIgnoreCase("show"))
+            DynamicFields.showField(binding.recyclerview2,jsonModelList,name);
+        else
+            DynamicFields.hideField(binding.recyclerview2,jsonModelList,name);
+    }
+
     public void handleSubmit() {
-        if (!CheckFieldValidations.isFieldsValidated(binding.recyclerview2, jsonModelList)) {
+        if (CheckFieldValidations.isFieldsValidated(binding.recyclerview2, jsonModelList)) {
             Toast.makeText(getContext(), "Validation Failed", Toast.LENGTH_SHORT).show();
             return;
         }

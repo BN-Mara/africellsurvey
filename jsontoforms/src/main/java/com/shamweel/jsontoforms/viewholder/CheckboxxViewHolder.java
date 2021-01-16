@@ -38,8 +38,13 @@ public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
                 if (getAdapterPosition() == -1) {
                     return;
                 }
-                Log.i("ITEMSELECTED",""+pos);
+                //Log.i("ITEMSELECTED",""+pos);
                 String chValue = checkedArray[pos] == -1 ? FormConstants.EMPTY_STRING : ((CheckBox) itemView.findViewById(pos)).getText().toString();
+
+                if(!jsonModelList.get(getAdapterPosition()).getList().get(pos).getIndexValue().equalsIgnoreCase("")){
+                    chValue = jsonModelList.get(getAdapterPosition()).getList().get(pos).getIndexValue();
+                }
+
                 if(checkedArray[pos] == 1)
                     checked.add(chValue);
                 else
