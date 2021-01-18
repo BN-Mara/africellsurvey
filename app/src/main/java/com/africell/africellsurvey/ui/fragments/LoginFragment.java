@@ -1,5 +1,6 @@
 package com.africell.africellsurvey.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -86,6 +87,7 @@ public class LoginFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_login, container, false);
         binding = FragmentLoginBinding.inflate(inflater,container,false);
         getActivity().setTitle("Log in");
+        getActivity().findViewById(R.id.frameLayout).setBackgroundColor(Color.WHITE);
         return binding.getRoot();
     }
     @Override

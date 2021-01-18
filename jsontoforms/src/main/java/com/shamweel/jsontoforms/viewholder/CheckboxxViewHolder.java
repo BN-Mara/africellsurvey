@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jolly.checkboxgroup.CheckboxGroup;
 import com.shamweel.jsontoforms.FormConstants;
 import com.shamweel.jsontoforms.R;
+import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
+import com.shamweel.jsontoforms.models.DynamicFieldModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
 import com.shamweel.jsontoforms.models.JSONModel;
+import com.shamweel.jsontoforms.validate.DynamicFields;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -26,11 +29,13 @@ import java.util.ListIterator;
 public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
     public TextView txtCheckbox;
     public CheckboxGroup chCheck;
-    public CheckboxxViewHolder(@NonNull View itemView,  List<JSONModel> jsonModelList) {
+    public JsonToFormClickListener jsonToFormClickListener;
+    public CheckboxxViewHolder(@NonNull View itemView,  List<JSONModel> jsonModelList, JsonToFormClickListener jsonToFormClickListener) {
         super(itemView);
         txtCheckbox = itemView.findViewById(R.id.txt_checkboxx);
         chCheck = itemView.findViewById(R.id.chGroup);
         List<String> checked = new LinkedList<>();
+        this.jsonToFormClickListener = jsonToFormClickListener;
         chCheck.onCheckBoxListener(new CheckboxGroup.onSelected() {
             @Override
             public void itemSelected(CheckboxGroup group, int pos, int[] checkedArray) {
@@ -51,6 +56,10 @@ public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
                     checked.remove(chValue);
                 DataValueHashMap.put(
                         jsonModelList.get(getAdapterPosition()).getId(),  listToString(checked));
+
+                String condition = jsonModelList.get(getAdapterPosition()).getCondition();
+                if(!condition.equalsIgnoreCase(""))
+                    displayFields(condition, chValue);
 
                 if (itemView.getRootView().findFocus() != null) {
                     itemView.getRootView().findFocus().clearFocus();
@@ -77,5 +86,15 @@ public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
 
 
         return csv.toString();
+    }
+    public void displayFields(String condition, String mValue){
+        DynamicFieldModel dfm = DynamicFields.checkCondition(condition,mValue);
+
+        if (dfm.isChecked() && !dfm.getClassName().equalsIgnoreCase("")) {
+            jsonToFormClickListener.showHideField(dfm.getClassName(), "show");
+        } else {
+            if(!dfm.getClassName().equalsIgnoreCase(""))
+                jsonToFormClickListener.showHideField(dfm.getClassName(), "hide");
+        }
     }
 }

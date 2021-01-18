@@ -79,7 +79,7 @@ public class CommonUtils {
                 if(!json.getJSONObject(i).getString("typeField").equalsIgnoreCase("inputCheckbox"))
                 {
                     jo.put("condition",json.getJSONObject(i).getString("condition"));
-                    jo.put("name",json.getJSONObject(i).getString("name"));
+                    jo.put("name",json.getJSONObject(i).getString("class"));
                 }
 
             }
@@ -96,7 +96,7 @@ public class CommonUtils {
                     break;
                 case "number":
                     jo.put("type",2);
-                    jo.put("input_type","");
+                    jo.put("input_type","numbers");
                     jo.put("max_length",10);
                     jo.put("hint",json.getJSONObject(i).getString("label"));
 

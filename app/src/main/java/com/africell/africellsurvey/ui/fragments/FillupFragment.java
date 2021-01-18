@@ -148,6 +148,8 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         DataValueHashMap.init();
         initRecyclerView();
         fetchData();
+
+
     }
 
     private void fetchData() {
@@ -162,7 +164,10 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         for( JSONModel jsonModel : jsonModelList1){
             DataValueHashMap.put(jsonModel.getId(),"");
         }
+
         mAdapter.notifyDataSetChanged();
+
+
     }
 
     private void initRecyclerView() {
@@ -174,6 +179,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         binding.recyclerview2.setLayoutManager(layoutManager);
         binding.recyclerview2.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerview2.setAdapter(mAdapter);
+        DynamicFields.initDynamicField(binding.recyclerview2,jsonModelList);
        /* binding.backBtn.setVisibility(View.INVISIBLE);
         binding.submitBtn.setVisibility(View.GONE);
         if(mAdapter.getItemCount()  > 1){
@@ -320,11 +326,18 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
     }
 
     @Override
-    public void showHideField(String name,String action) {
-        if(action.equalsIgnoreCase("show"))
-            DynamicFields.showField(binding.recyclerview2,jsonModelList,name);
-        else
-            DynamicFields.hideField(binding.recyclerview2,jsonModelList,name);
+    public boolean showHideField(String name,String action) {
+        boolean isShown = false;
+        if(action.equalsIgnoreCase("show")) {
+            DynamicFields.showField(binding.recyclerview2, jsonModelList, name);
+            isShown = true;
+        }
+
+        else {
+            DynamicFields.hideField(binding.recyclerview2, jsonModelList, name);
+            isShown = false;
+        }
+        return  isShown;
     }
 
     public void handleSubmit() {

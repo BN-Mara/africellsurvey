@@ -1,6 +1,8 @@
 package com.africell.africellsurvey.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.africell.africellsurvey.R;
 import com.africell.africellsurvey.databinding.FragmentFormBinding;
 import com.africell.africellsurvey.ui.MainActivity;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
@@ -84,6 +87,7 @@ public class FormFragment extends Fragment implements SharedPreferences.OnShared
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
         getActivity().setTitle("Form detail");
+        //getActivity().findViewById(R.id.frameLayout).setBackgroundColor(500158);
         displayDetails();
 
     }
