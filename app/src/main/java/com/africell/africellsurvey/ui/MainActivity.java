@@ -1,18 +1,24 @@
 package com.africell.africellsurvey.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 //import android.app.FragmentManager;
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncRequest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
@@ -26,15 +32,16 @@ import com.africell.africellsurvey.ui.fragments.FormsFragment;
 import com.africell.africellsurvey.ui.fragments.LoginFragment;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
 
+
 import java.text.Normalizer;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity" ;
+    private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
-private SurveyFormViewModel viewModel;
+    private SurveyFormViewModel viewModel;
     // The authority for the sync adapter's content provider
     public static final String AUTHORITY = "com.africell.africellsurvey.provider";
     // An account type, in the form of a domain name
@@ -55,16 +62,16 @@ private SurveyFormViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       mAccount = CreateSyncAccount(this);
+        mAccount = CreateSyncAccount(this);
         // Get the content resolver for your app
-       mResolver = getContentResolver();
+        mResolver = getContentResolver();
         ContentResolver.setMasterSyncAutomatically(true);
-        Bundle settingBundle=new Bundle();
+        Bundle settingBundle = new Bundle();
 
-        settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL,true);
-        settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED,true);
-        ContentResolver.requestSync(mAccount,AUTHORITY,settingBundle);
-        ContentResolver.setSyncAutomatically(mAccount,AUTHORITY,true);
+        settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(mAccount, AUTHORITY, settingBundle);
+        ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
         /*
          * Turn on periodic syncing
@@ -74,14 +81,29 @@ private SurveyFormViewModel viewModel;
                 AUTHORITY,
                 Bundle.EMPTY,
                 10);
+
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // we can enable inexact timers in our periodic sync
+            SyncRequest request = new SyncRequest.Builder().
+                    syncPeriodic(10, 0).
+                    setSyncAdapter(mAccount, AUTHORITY).
+                    setExtras(new Bundle()).build();
+            ContentResolver.requestSync(request);
+        } else {
+            ContentResolver.addPeriodicSync(
+                    mAccount,
+                    AUTHORITY,
+                    Bundle.EMPTY,
+                    10);
+        }*/
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(SurveyFormViewModel.class);
         //viewModel.deleteAll();
-        if(viewModel.getSessionSatus()){
+        if (viewModel.getSessionSatus()) {
             try {
                 Fragment formFrag = (Fragment) FormsFragment.class.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,formFrag)
+                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, formFrag)
                         .commit();
                 //replaceFragment(FormsFragment.class);
             } catch (IllegalAccessException e) {
@@ -90,8 +112,8 @@ private SurveyFormViewModel viewModel;
                 e.printStackTrace();
             }
 
-        }else{
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,new LoginFragment())
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LoginFragment())
                     .commit();
             //replaceFragment(LoginFragment.class);
         }
@@ -108,18 +130,7 @@ private SurveyFormViewModel viewModel;
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,fragment).addToBackStack(fragment.getClass().getName())
                 .commit();
     }
-    public void replaceFragment(Fragment source, Fragment destination){
 
-            //Fragment sce = (Fragment) source.newInstance();
-            //Fragment dst = (Fragment) destination.newInstance();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft=fragmentManager.beginTransaction();
-            ft.add(R.id.frameLayout, destination);
-            ft.hide(source);
-            ft.addToBackStack(source.getClass().getName());
-            ft.commit();
-
-    }
 
 
     @Override

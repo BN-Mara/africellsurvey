@@ -1,7 +1,9 @@
 package com.shamweel.jsontoforms.validate;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 
@@ -26,11 +28,11 @@ public class DynamicFields {
             RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(i);
             String condition = jsonModelList.get(i).getCondition();
             //String name = jsonModelList.get(i).getName();
-            Log.i("CLASSNAME",condition);
+            //Log.i("CLASSNAME",recyclerView.toString());
             if(!condition.equalsIgnoreCase("")){
                 DynamicFieldModel dfm = checkCondition(condition,"");
                 if(dfm.isChecked() && !dfm.getClassName().equalsIgnoreCase("")){
-                    Log.i("CLASSNAME",dfm.getClassName());
+                    //Log.i("CLASSNAME",dfm.getClassName());
                     //viewHolder.itemView.setVisibility(View.GONE);
                     showField(recyclerView,jsonModelList,dfm.getClassName());
 
@@ -52,6 +54,9 @@ public class DynamicFields {
             String name = jsonModelList.get(i).getName();
             if(name.equalsIgnoreCase(fieldName)){
                 if(viewHolder != null && viewHolder.itemView != null) {
+                    ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
+                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    viewHolder.itemView.setLayoutParams(params);
 
                         viewHolder.itemView.setVisibility(View.VISIBLE);
                 }
@@ -68,8 +73,13 @@ public class DynamicFields {
                 if (viewHolder != null && viewHolder.itemView != null) {
                     DataValueHashMap.put(jsonModelList.get(i).getId(), "");
                     viewHolder.itemView.setVisibility(View.GONE);
+                    ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
+                    params.height = 0;
+                    viewHolder.itemView.setLayoutParams(params);
+
                     if (viewHolder instanceof EditTextViewHolder) {
                         ((EditTextViewHolder) viewHolder).layoutEdittext.getEditText().setText("");
+
                     } else if (viewHolder instanceof RadioViewHolder) {
                         for (int j = 0; j < ((RadioViewHolder) viewHolder).rGroup.getChildCount(); j++) {
                             ((RadioButton) ((RadioViewHolder) viewHolder).rGroup.getChildAt(j)).setChecked(false);

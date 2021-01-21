@@ -54,7 +54,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         contentResolver = context.getContentResolver();
         this.mContext = context;
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.100.26.103:45455/api/app/")
+                .baseUrl("http://10.100.26.67:45455/api/app/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiService.class);

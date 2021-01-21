@@ -6,6 +6,9 @@ import android.preference.PreferenceManager;
 
 import com.africell.africellsurvey.model.User;
 
+/**
+ * SharedPreference management class
+ */
 public class SaveSharedPreference {
     private static final String LOGGED_IN_PREF = "login_status";
     private static final String USER_NAME = "logged_username";

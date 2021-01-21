@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.africell.africellsurvey.R;
 /**
- * Author: Mario Velasco Casquero
- * Date: 08/09/2015
- * Email: m3ario@gmail.com
+ * image picker implementation
  */
 public class ImagePicker {
 

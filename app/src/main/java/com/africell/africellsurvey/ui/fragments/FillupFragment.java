@@ -51,6 +51,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -149,7 +150,11 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         initRecyclerView();
         fetchData();
 
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void fetchData() {
@@ -162,10 +167,14 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         }.getType());
         jsonModelList.addAll(jsonModelList1);
         for( JSONModel jsonModel : jsonModelList1){
-            DataValueHashMap.put(jsonModel.getId(),"");
+            if(!jsonModel.getId().equalsIgnoreCase("submit_button"))
+                DataValueHashMap.put(jsonModel.getId(),"");
         }
 
         mAdapter.notifyDataSetChanged();
+        if(Objects.requireNonNull(binding.recyclerview2.getAdapter()).getItemCount() > 0)
+        DynamicFields.initDynamicField(binding.recyclerview2,jsonModelList);
+
 
 
     }
@@ -179,7 +188,8 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         binding.recyclerview2.setLayoutManager(layoutManager);
         binding.recyclerview2.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerview2.setAdapter(mAdapter);
-        DynamicFields.initDynamicField(binding.recyclerview2,jsonModelList);
+
+
        /* binding.backBtn.setVisibility(View.INVISIBLE);
         binding.submitBtn.setVisibility(View.GONE);
         if(mAdapter.getItemCount()  > 1){
@@ -420,12 +430,12 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_LOCATION) {
-
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                DataValueHashMap.init();
-                initRecyclerView();
-                //fetchData();
+            if(grantResults.length >  0)
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //DataValueHashMap.init();
+                    // initRecyclerView();
+                    //fetchData();
+                    onStart();
 
             }
         }

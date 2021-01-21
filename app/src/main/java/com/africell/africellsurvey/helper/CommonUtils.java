@@ -1,6 +1,7 @@
 package com.africell.africellsurvey.helper;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
+
+import javax.annotation.Resource;
 
 public class CommonUtils {
 
@@ -23,6 +27,12 @@ public class CommonUtils {
     private CommonUtils() {
     }
 
+    /**
+     * load json file, and return json data as string
+     * @param context
+     * @param fileName
+     * @return
+     */
     public static String loadJSONFromAsset(Context context, String fileName){
         String json = null;
         try {
@@ -48,7 +58,7 @@ public class CommonUtils {
             JSONArray js =  new JSONArray(json) ;
             js = adaptSchema(js);
             json =  js.toString();
-           Toast.makeText(context,json,Toast.LENGTH_LONG);
+           //Toast.makeText(context,json,Toast.LENGTH_LONG);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -56,12 +66,22 @@ public class CommonUtils {
         return json;
 
     }
+
+    /**
+     * adapt json schema to match json format of jsonToform library
+     * @param   json
+     * @return JSONArray
+     * @throws JSONException
+     */
     public static JSONArray adaptSchema(JSONArray json) throws JSONException {
 
 
         JSONArray js = new JSONArray();
         String key ="";
         String value ="";
+
+        String lang = Resources.getSystem().getConfiguration().locale.getLanguage();
+        Log.i("LOCALE_LNG",lang);
         for(int i=0 ;i<json.length();i++){
             JSONObject jo = new JSONObject();
             if(json.getJSONObject(i).getString("typeField").equalsIgnoreCase("header")){
@@ -71,11 +91,26 @@ public class CommonUtils {
                // jo.put("hint",json.getJSONObject(i).getString("headertext"));
             }
             else{
-                key = json.getJSONObject(i).getString("label");
-                //value  = json.getJSONObject(i).getString("");
+                if(json.getJSONObject(i).has("language") && !json.getJSONObject(i).getJSONArray("language").getJSONObject(0).getString("value").equalsIgnoreCase("") ) {
+                    JSONArray lng = json.getJSONObject(i).getJSONArray("language");
+                    for(int z=0; z<lng.length();z++){
+                        if(lang.equalsIgnoreCase(lng.getJSONObject(z).getString("label"))){
+                            key = lng.getJSONObject(z).getString("value");
+                            break;
+                        }else{
+                            key = json.getJSONObject(i).getString("label");
+                        }
+                    }
+                }else{
+                    key = json.getJSONObject(i).getString("label");
+                    //value  = json.getJSONObject(i).getString("");
+                }
+
+
+
 
                 jo.put("_id", key);
-                jo.put("text",json.getJSONObject(i).getString("label"));
+                jo.put("text", key);
                 if(!json.getJSONObject(i).getString("typeField").equalsIgnoreCase("inputCheckbox"))
                 {
                     jo.put("condition",json.getJSONObject(i).getString("condition"));
@@ -90,15 +125,15 @@ public class CommonUtils {
                     jo.put("type",2);
                     jo.put("input_type","text");
                     jo.put("max_length",255);
-                    jo.put("hint",json.getJSONObject(i).getString("label"));
+                    jo.put("hint", key);
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     break;
                 case "number":
                     jo.put("type",2);
-                    jo.put("input_type","numbers");
-                    jo.put("max_length",10);
-                    jo.put("hint",json.getJSONObject(i).getString("label"));
+                    jo.put("input_type","text");
+                    jo.put("max_length",30);
+                    jo.put("hint", key);
 
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
@@ -115,7 +150,7 @@ public class CommonUtils {
                         jsList.put(joList);
                     }
                     jo.put("list",jsList);
-                    jo.put("hint",json.getJSONObject(i).getString("label"));
+                    jo.put("hint", key);
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     jo.put("type",4);
@@ -131,7 +166,7 @@ public class CommonUtils {
                     break;
                 case "inputCheckbox":
                     jo.put("type",7);
-                    jo.put("hint",json.getJSONObject(i).getString("label"));
+                    jo.put("hint", key);
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     break;
@@ -147,7 +182,7 @@ public class CommonUtils {
                         jsList2.put(joList2);
                     }
                     jo.put("list",jsList2);
-                    jo.put("hint",json.getJSONObject(i).getString("label"));
+                    jo.put("hint", key);
                     jo.put("is_required",json.getJSONObject(i).getBoolean("required"));
 
                     jo.put("type",11);

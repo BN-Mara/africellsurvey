@@ -6,7 +6,16 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * class holding methods to convert image from bitmap to string,  and vice-versa
+ */
 public class ImageConverter {
+    /**
+     * convert base4 string to bitmap image
+     * @param base64Str
+     * @return
+     * @throws IllegalArgumentException
+     */
     public static Bitmap convert(String base64Str) throws IllegalArgumentException
     {
         byte[] decodedBytes = Base64.decode(
@@ -17,6 +26,12 @@ public class ImageConverter {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
+
+    /**
+     * convert bitmap image to base4 string
+     * @param bitmap
+     * @return
+     */
     public static String convert(Bitmap bitmap)
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

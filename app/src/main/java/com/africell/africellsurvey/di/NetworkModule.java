@@ -23,7 +23,7 @@ public class NetworkModule {
                 //10.0.2.2
                 //192.168.43.45
                 //10.100.26.106
-                .baseUrl("http://192.168.43.199:45455/api/app/")
+                .baseUrl("http://10.100.26.67:45455/api/app/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
