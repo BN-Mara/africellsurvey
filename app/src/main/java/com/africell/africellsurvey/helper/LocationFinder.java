@@ -139,7 +139,8 @@ public class LocationFinder extends Service implements LocationListener {
                                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                             //Log.e(“GPS Enabled”, “GPS Enabled”);
                             if (locationManager != null) {
-                                location = locationManager
+                               location =  locationManager
+                                        //.getCurrentLocation(LocationManager.GPS_PROVIDER,null,null,null);
                                         .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                                 if (location != null) {
                                     latitude = location.getLatitude();

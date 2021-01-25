@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.africell.africellsurvey.databinding.FragmentFillupBinding;
 import com.africell.africellsurvey.helper.CommonUtils;
 import com.africell.africellsurvey.helper.DateConverter;
+import com.africell.africellsurvey.helper.FusedLocationService;
 import com.africell.africellsurvey.helper.ImageConverter;
 import com.africell.africellsurvey.helper.ImagePicker;
 import com.africell.africellsurvey.helper.LocationFinder;
@@ -133,7 +134,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         //return inflater.inflate(R.layout.fragment_fillup, container, false);
         binding = FragmentFillupBinding.inflate(inflater, container, false);
         setLocation();
-        mFusedLocationClient = getFusedLocationProviderClient(getActivity());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         return binding.getRoot();
 
@@ -269,6 +270,7 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
 
     }
 
+
     public void setLocation() {
         //googleMap.setMyLocationEnabled(true);
         //googleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -287,10 +289,11 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
             }, REQUEST_LOCATION);
             // return;
         } else {
+            FusedLocationService  fservice = new FusedLocationService(getContext());
 
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-            mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(getActivity(),location -> {
+            mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY,null).addOnSuccessListener(requireActivity(),location -> {
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();

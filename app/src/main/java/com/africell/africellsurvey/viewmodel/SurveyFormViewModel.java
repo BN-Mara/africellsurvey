@@ -240,6 +240,7 @@ public class SurveyFormViewModel extends AndroidViewModel {
         SaveSharedPreference.addToShared(getApplication(),sf.getId(), dataCount.toString());
         saveFile(ja.toString(), sf.getSchema_path(), 'R');
     }
+
     public int[] getDataCount(){
         int [] arr = {0,0};
        String dcount =  SaveSharedPreference.getShared(getApplication(),getCurrentForm().getId());

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">jsonToForms</string>
+    <string name="pick_image_intent_text">Capture Image</string>
+</resources>

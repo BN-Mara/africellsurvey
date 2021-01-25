@@ -109,12 +109,13 @@ public class CommonUtils {
 
 
 
-                jo.put("_id", key);
+                jo.put("_id", json.getJSONObject(i).getString("label"));
                 jo.put("text", key);
                 if(!json.getJSONObject(i).getString("typeField").equalsIgnoreCase("inputCheckbox"))
                 {
                     jo.put("condition",json.getJSONObject(i).getString("condition"));
                     jo.put("name",json.getJSONObject(i).getString("class"));
+                    
                 }
 
             }

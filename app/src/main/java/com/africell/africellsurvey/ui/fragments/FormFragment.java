@@ -88,6 +88,7 @@ public class FormFragment extends Fragment implements SharedPreferences.OnShared
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
         getActivity().setTitle("Form detail");
         //getActivity().findViewById(R.id.frameLayout).setBackgroundColor(500158);
+
         displayDetails();
 
     }

@@ -1,14 +1,21 @@
 package com.africell.africellsurvey.sync;
 
 import android.accounts.Account;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
+import com.africell.africellsurvey.R;
 import com.africell.africellsurvey.helper.SaveSharedPreference;
 import com.africell.africellsurvey.model.FormData;
 import com.africell.africellsurvey.model.FormDataResponse;
@@ -37,6 +44,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.provider.Settings.System.getString;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 //@AndroidEntryPoint
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = "SyncAdapter";
@@ -44,11 +54,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     int currD = 0;
     //@Inject
     //Repository repository;
+    private final String CHANNEL_ID = "AfrisurveyChannel";
 
     private List<SurveyForm> surveyForms;
 
     Context mContext;
     ApiService retrofit = null;
+    NotificationCompat.Builder builder = null;
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         contentResolver = context.getContentResolver();
@@ -58,6 +70,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiService.class);
+        /*builder = new NotificationCompat.Builder(mContext,CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_check)
+                .setContentTitle("Afrisurvey")
+                .setContentText("Transfering data to remote server")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);*/
     }
 
 
@@ -67,7 +84,23 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         contentResolver = context.getContentResolver();
         this.mContext = context;
     }
+   /* private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = mContext.getResources().getString(R.string.channel_name);
+            String description = mContext.getResources().getString(R.string.channel_description);;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(mContext,NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+*/
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         //Log.d(TAG,"onperform sync start");

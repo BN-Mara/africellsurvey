@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.africell.africellsurvey.R;
 import com.africell.africellsurvey.databinding.ActivityMainBinding;
+import com.africell.africellsurvey.helper.FusedLocationService;
 import com.africell.africellsurvey.model.SurveyForm;
 import com.africell.africellsurvey.ui.fragments.FormFragment;
 import com.africell.africellsurvey.ui.fragments.FormsFragment;
@@ -96,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
                     Bundle.EMPTY,
                     10);
         }*/
+        FusedLocationService  fservice = new FusedLocationService(this);
+        Log.i("main_lat",""+fservice.getLatitude());
+        Log.i("main_lon",""+fservice.getLongitude());
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(SurveyFormViewModel.class);
