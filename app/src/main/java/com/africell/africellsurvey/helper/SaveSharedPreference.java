@@ -35,5 +35,8 @@ public class SaveSharedPreference {
     public static String getShared(Context context,String key) {
         return getPreferences(context).getString(key, null);
     }
+    public static void deleteShared(Context contex, String key){
+        getPreferences(contex).edit().remove(key).apply();
+    }
 
 }

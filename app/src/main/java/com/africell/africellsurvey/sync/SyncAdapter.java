@@ -60,13 +60,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     Context mContext;
     ApiService retrofit = null;
+    String ip="";
     NotificationCompat.Builder builder = null;
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         contentResolver = context.getContentResolver();
         this.mContext = context;
+        //192.168.137.1:45455
+        ip = SaveSharedPreference.getShared(mContext,"ip");
+        ip = "http://"+ip+"/api/app/";
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.100.26.67:45455/api/app/")
+                .baseUrl(ip)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiService.class);
@@ -83,6 +87,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize, allowParallelSyncs);
         contentResolver = context.getContentResolver();
         this.mContext = context;
+        System.out.println("sync started");
     }
    /* private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -100,7 +105,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
 */
+    public void getRetrofit(String baseurl){
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseurl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(ApiService.class);
+    }
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         //Log.d(TAG,"onperform sync start");
@@ -140,10 +153,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void sendData(String formId, String json){
         //send each object containing form value, and remove
         System.out.print("inside sendData");
+        JSONArray jadc = getDataCount(formId);
+
 
         String jsonInputString = null;
         JSONObject jos;
         try {
+            if(jadc.length() > 2 && jadc.getString(2) != null && !jadc.getString(2).isEmpty())
+                //"http://"+ip+"/api/app/"
+                getRetrofit("http://"+jadc.getString(2)+"/api/app/");
+            else
+                getRetrofit(ip);
+
             JSONArray ja = new JSONArray(json);
             if(ja.length() > 0) {
                 for (int i = 0; i < ja.length(); i++) {
@@ -230,6 +251,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
         }
         return resp;
+    }
+
+    private JSONArray getDataCount(String formId){
+        String dataCount = SaveSharedPreference.getShared(mContext,formId);
+        JSONArray ja2 = null ;
+        try{
+           ja2 = new JSONArray(dataCount);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        return ja2;
     }
 
     private void sent(String formId, JSONArray ja) {

@@ -13,4 +13,6 @@
     <string name="back">Back</string>
     <string name="channel_name">AfricellsurveyChannel</string>
     <string name="channel_description">Africellsurvey  Channel</string>
+    <string name="ip">IP</string>
+    <string name="send_to">share data</string>
 </resources>

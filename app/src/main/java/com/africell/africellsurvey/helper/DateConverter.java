@@ -13,10 +13,11 @@ public class DateConverter {
      * Get current time in human-readable form.
      * @return current time as a string.
      */
-    public String getNow() {
+    public static String getNow() {
         Time now = new Time();
         now.setToNow();
-        String sTime = now.format("%Y_%m_%d %T");
+        String sTime = now.format("%Y_%m_%d_%T");
+        sTime = sTime.replace(":","");
         return sTime;
     }
     /**
@@ -24,7 +25,7 @@ public class DateConverter {
      * The returned value may be used to compose a file name.
      * @return current time as a string.
      */
-    public String getTimeStamp() {
+    public static String getTimeStamp() {
         Time now = new Time();
         now.setToNow();
         String sTime = now.format("%d/%m/%Y %H:%M:%S");

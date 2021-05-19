@@ -1,5 +1,7 @@
 package com.africell.africellsurvey.ui.fragments;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,6 +28,7 @@ import com.africell.africellsurvey.databinding.FragmentFormsBinding;
 import com.africell.africellsurvey.model.SurveyForm;
 import com.africell.africellsurvey.ui.MainActivity;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,6 +181,19 @@ public class FormsFragment extends Fragment {
             public void setOnclickLister(SurveyForm sf, int position) {
                 //sf.setIsDownloaded(1);
                 viewModel.insertForm(sf);
+            }
+
+            @Override
+            public void deleteOnClick(SurveyForm sf, int position) {
+                new MaterialAlertDialogBuilder(requireActivity())
+                        .setTitle("Confirm deletion")
+                        .setMessage("Are you sure to delete this?")
+                        .setPositiveButton("Yes, Delete", (dialog, which) -> viewModel.deleteForm(sf.getId()))
+                        .setNegativeButton("No, Cancel", (dialog, which) -> {
+
+                        }).show();
+
+                adapter.notifyDataSetChanged();
             }
 
             @Override

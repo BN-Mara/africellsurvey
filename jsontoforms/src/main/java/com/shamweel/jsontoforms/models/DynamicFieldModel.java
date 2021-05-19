@@ -2,10 +2,12 @@ package com.shamweel.jsontoforms.models;
 
 public class DynamicFieldModel {
     private boolean checked;
-    private String className;
-    public DynamicFieldModel(boolean checked, String className){
+    private String className,action;
+
+    public DynamicFieldModel(boolean checked, String className, String action){
         this.checked = checked;
         this.className = className;
+        this.action = action;
     }
 
     public String getClassName() {
@@ -22,5 +24,13 @@ public class DynamicFieldModel {
 
     public boolean isChecked() {
         return checked;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }

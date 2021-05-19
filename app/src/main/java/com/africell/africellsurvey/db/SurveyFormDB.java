@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase;
 
 import com.africell.africellsurvey.model.SurveyForm;
 
-@Database(entities = {SurveyForm.class}, version = 3,exportSchema = false )
+@Database(entities = {SurveyForm.class}, version = 6,exportSchema = false )
 public abstract class SurveyFormDB extends RoomDatabase {
     public abstract SurveyFormDao surveyFormDao();
 }

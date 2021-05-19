@@ -91,10 +91,10 @@ public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
         DynamicFieldModel dfm = DynamicFields.checkCondition(condition,mValue);
 
         if (dfm.isChecked() && !dfm.getClassName().equalsIgnoreCase("")) {
-            jsonToFormClickListener.showHideField(dfm.getClassName(), "show");
+            jsonToFormClickListener.showHideField(dfm.getClassName(), dfm.getAction());
         } else {
             if(!dfm.getClassName().equalsIgnoreCase(""))
-                jsonToFormClickListener.showHideField(dfm.getClassName(), "hide");
+                jsonToFormClickListener.showHideField(dfm.getClassName(), dfm.getAction());
         }
     }
 }

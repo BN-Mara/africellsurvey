@@ -142,11 +142,29 @@ public class CommonUtils {
                 case "inputRadio":
                     JSONArray jsList= new JSONArray();
                     JSONArray options = json.getJSONObject(i).getJSONArray("options");
+                    JSONArray optionLang = null;
+                    if(json.getJSONObject(i).has("optionLanguage")){
+                        optionLang = json.getJSONObject(i).getJSONArray("optionLanguage");
+                    }
                     JSONObject joList = null;
                     for(int j = 0; j < options.length(); j++){
                         joList = new JSONObject();
                         joList.put("index",j);
-                        joList.put("index_text",options.getJSONObject(j).getString("label"));
+                        if(optionLang != null && j < optionLang.length()){
+                            if(!optionLang.getJSONObject(j).getString("label").equalsIgnoreCase("")
+                                    && !optionLang.getJSONObject(j).getString("value").equalsIgnoreCase("")){
+                                if(optionLang.getJSONObject(j).getString("label").equalsIgnoreCase(lang)){
+                                    joList.put("index_text",optionLang.getJSONObject(j).getString("value"));
+                                }else{
+                                    joList.put("index_text",options.getJSONObject(j).getString("label"));
+                                }
+                            }else{
+                                joList.put("index_text",options.getJSONObject(j).getString("label"));
+                            }
+
+                        }else{
+                            joList.put("index_text",options.getJSONObject(j).getString("label"));
+                        }
                         joList.put("indexValue",options.getJSONObject(j).getString("value"));
                         jsList.put(joList);
                     }
@@ -174,11 +192,30 @@ public class CommonUtils {
                 case "inputCheckboxx":
                     JSONArray jsList2= new JSONArray();
                     JSONArray options2 = json.getJSONObject(i).getJSONArray("options");
+                    JSONArray optionLang2 = null;
+                    if(json.getJSONObject(i).has("optionLanguage")){
+                        optionLang2 = json.getJSONObject(i).getJSONArray("optionLanguage");
+                    }
                     JSONObject joList2 = null;
                     for(int j = 0; j < options2.length(); j++){
                         joList2 = new JSONObject();
                         joList2.put("index",j);
-                        joList2.put("index_text",options2.getJSONObject(j).getString("label"));
+                        if(optionLang2  != null && j < optionLang2.length()){
+                            if(!optionLang2.getJSONObject(j).getString("label").equalsIgnoreCase("")
+                            && !optionLang2.getJSONObject(j).getString("value").equalsIgnoreCase("")){
+                                if(optionLang2.getJSONObject(j).getString("label").equalsIgnoreCase(lang)){
+                                    joList2.put("index_text",optionLang2.getJSONObject(j).getString("value"));
+                                }else{
+                                    joList2.put("index_text",options2.getJSONObject(j).getString("label"));
+                                }
+                            }else{
+                                joList2.put("index_text",options2.getJSONObject(j).getString("label"));
+                            }
+
+                        }else{
+                            joList2.put("index_text",options2.getJSONObject(j).getString("label"));
+                        }
+
                         joList2.put("indexValue",options2.getJSONObject(j).getString("value"));
                         jsList2.put(joList2);
                     }
@@ -191,11 +228,29 @@ public class CommonUtils {
                 case "select":
                     JSONArray jsList1= new JSONArray();
                     JSONArray options1 = json.getJSONObject(i).getJSONArray("options");
+                    JSONArray optionLang1 = null;
+                    if(json.getJSONObject(i).has("optionLanguage")){
+                        optionLang1 = json.getJSONObject(i).getJSONArray("optionLanguage");
+                    }
                     JSONObject joList1 = null;
                     for(int k = 0; k < options1.length(); k++){
                         joList1 = new JSONObject();
                         joList1.put("index",k);
-                        joList1.put("index_text",options1.getJSONObject(k).getString("label"));
+                        if(optionLang1 != null && k < optionLang1.length() ){
+                            if(!optionLang1.getJSONObject(k).getString("label").equalsIgnoreCase("")
+                                    && !optionLang1.getJSONObject(k).getString("value").equalsIgnoreCase("")){
+                                if(optionLang1.getJSONObject(k).getString("label").equalsIgnoreCase(lang)){
+                                    joList1.put("index_text",optionLang1.getJSONObject(k).getString("value"));
+                                }else{
+                                    joList1.put("index_text",options1.getJSONObject(k).getString("label"));
+                                }
+                            }else{
+                                joList1.put("index_text",options1.getJSONObject(k).getString("label"));
+                            }
+
+                        }else{
+                            joList1.put("index_text",options1.getJSONObject(k).getString("label"));
+                        }
                         joList1.put("indexValue",options1.getJSONObject(k).getString("value"));
                         jsList1.put(joList1);
                     }

@@ -207,28 +207,49 @@
                     android:orientation="horizontal"
 
                     >
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.4"/>
-
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:id="@+id/buton"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/share_btn"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="3dip"
+                        android:layout_weight="0.4"
 
+                        android:backgroundTint="#22C2DC"
+
+
+                        android:text="share data"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color_white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:icon="@android:drawable/ic_menu_share"
+                        app:iconGravity="start"
+                        app:iconTint="@color/color_white"
+
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.1"/>
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/buton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+
+                        android:layout_weight="0.4"
+                        android:layout_margin="3dip"
                         android:backgroundTint="@color/colorPrimary"
 
                         android:text="Go to form"
                         android:textAllCaps="false"
                         android:textColor="@color/color_white"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        app:icon="@android:drawable/ic_input_add"
+                        app:icon="@drawable/ic_next"
                         app:iconGravity="start"
-
                         app:iconTint="@color/color_white"
 
                         />

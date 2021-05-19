@@ -47,6 +47,7 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
         holder.itemBiding.ftitle.setText(mList.get(position).getTitle());
         holder.itemBiding.fversion.setText(mList.get(position).getVersion());
         holder.itemBiding.fdescription.setText(mList.get(position).getDescription());
+        holder.itemBiding.fsurvey.setText(mList.get(position).getSurveyTitle());
         holder.itemBiding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +77,12 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
             }else{
                 holder.itemBiding.fstatusIc.setEnabled(true);
             }
+            if(mList.get(position).isFromLocal()){
+                holder.itemBiding.fdelete.setVisibility(View.VISIBLE);
+            }else{
+                holder.itemBiding.fdelete.setVisibility(View.GONE);
+            }
+
 
 
         //}
@@ -105,6 +112,18 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
                 //SurveyFormViewModel vm = new SurveyFormViewModel()
             }
         });
+            holder.itemBiding.fdelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SurveyForm sf = mList.get(position);
+                    if (myOnclikListner != null) {
+                        myOnclikListner.deleteOnClick(sf,position);
+                        //mList.get(position).setIsDownloaded(1);
+                        //sf.setIsDownloaded(1);
+                    }
+                    notifyDataSetChanged();
+                }
+            });
         //Glide.with(mContext).load(mList.get(position).getUrl())
         //       .into(holder.itemBinding.pokemonImage);
     }
@@ -155,5 +174,6 @@ public class SurveyFormAdapter extends RecyclerView.Adapter<SurveyFormAdapter.Fo
     public interface MyOnclikListner{
         void setOnclickLister(SurveyForm sf,int position);
         void itemOnclick(SurveyForm sf, int position);
+        void deleteOnClick(SurveyForm sf, int position);
     }
 }

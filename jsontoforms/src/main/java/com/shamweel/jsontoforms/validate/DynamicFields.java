@@ -29,6 +29,7 @@ public class DynamicFields {
             String condition = jsonModelList.get(i).getCondition();
             //String name = jsonModelList.get(i).getName();
             //Log.i("CLASSNAME",recyclerView.toString());
+            if(!jsonModelList.get(i).getType().equals(1))
             if(!condition.equalsIgnoreCase("")){
                 DynamicFieldModel dfm = checkCondition(condition,"");
                 if(dfm.isChecked() && !dfm.getClassName().equalsIgnoreCase("")){
@@ -100,19 +101,106 @@ public class DynamicFields {
     public static DynamicFieldModel checkCondition(String condition, String mValue){
         boolean checked = false;
         String cClass = "";
+        String[] ccClass=null;
+        String cAction = "";
+        double a,b;
+        String cOperator = null;
+        String cValue = null; //value to check >
+        cAction = null; //action to perform schow or hide
+        cClass = null;
         if(!condition.equalsIgnoreCase("")) {
             condition = condition.trim();
-            String[] condictionArray = condition.split(" ");
-            String cValue = condictionArray[0]; //value to check
-            String cAction = condictionArray[1].trim(); //action to perform schow or hide
-            cClass = condictionArray[2].trim(); // class of items to show or hide
-            if (cValue.equalsIgnoreCase(mValue) && cAction.equalsIgnoreCase("show")) {
+            String[] conditionArray = condition.split(" ");
+            //check condition length
+            if(conditionArray.length < 5){
+                cOperator = conditionArray[0];
+                cValue = conditionArray[1]; //value to check >
+                cAction = conditionArray[2].trim(); //action to perform schow or hide
+                cClass = conditionArray[3];
+            }
+            else{
+                cOperator = conditionArray[1];
+                 cValue = conditionArray[2]; //value to check >
+                cAction = conditionArray[3].trim(); //action to perform schow or hide
+                cClass = conditionArray[4];
+            }
+             // class of items to show or hide
+            //ccClass = cClass.split(",");all.va
+
+            switch (cOperator){
+                case ">":
+                    if(!cValue.isEmpty() && !mValue.isEmpty() && isNumeric(mValue)) {
+                        a = Double.parseDouble(cValue);
+                        b = Double.parseDouble(mValue);
+                        if (b > a) {
+                            checked = true;
+                        }
+                    }
+                    break;
+                case">=":
+                    if(!cValue.isEmpty() && !mValue.isEmpty() && isNumeric(mValue)) {
+                        a = Double.parseDouble(cValue);
+                        b = Double.parseDouble(mValue);
+                        if (b >= a) {
+                            checked = true;
+
+                        }
+                    }
+                    break;
+                case "<":
+                    if(!cValue.isEmpty() && !mValue.isEmpty()) {
+                        a = Double.parseDouble(cValue);
+                        b = Double.parseDouble(mValue);
+                        if (b < a) {
+                            checked = true;
+
+                        }
+                    }
+                    break;
+                case "<=":
+                    if(!cValue.isEmpty() && !mValue.isEmpty() && isNumeric(mValue)) {
+                        a = Double.parseDouble(cValue);
+                        b = Double.parseDouble(mValue);
+                        if (b <= a) {
+                            checked = true;
+
+                        }
+                    }
+                    break;
+                case"=":
+                    Log.i("CONDITION",cValue+" "+mValue);
+                    if(cValue.equalsIgnoreCase(mValue)){
+                        checked = true;
+                        Log.i("CONDITION","equal");
+
+                    }
+                    break;
+                case "!=":
+                    if(!cValue.equalsIgnoreCase(mValue)){
+                        checked  = true;
+
+                    }
+                    break;
+                case "x":
+                    checked=true;
+                    break;
+
+                default:
+                    break;
+
+
+            }
+
+            /*if (cValue.equalsIgnoreCase(mValue) && cAction.equalsIgnoreCase("show")) {
                 checked=true;
             } else {
                 checked=false;
-            }
+            }*/
         }
 
-        return new DynamicFieldModel(checked,cClass);
+        return new DynamicFieldModel(checked,cClass,cAction);
+    }
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
 }

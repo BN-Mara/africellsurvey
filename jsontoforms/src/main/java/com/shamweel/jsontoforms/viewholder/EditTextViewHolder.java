@@ -53,8 +53,19 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
                         editable.toString());
 
                 String condition = jsonModelList.get(getAdapterPosition()).getCondition();
-                if(!condition.equalsIgnoreCase(""))
+                String thisclass = jsonModelList.get(getAdapterPosition()).getName();
+
+
+
+                if(!condition.equalsIgnoreCase("")){
                     displayFields(condition, editable.toString());
+
+                }
+                /*if(condition.split(" ").length > 4)
+                    checkAllFieldCondition(jsonModelList,editable.toString(), thisclass);
+                    
+                 */
+
 
                 if (editable.length() > 0 && layoutEdittext.isErrorEnabled()){
                     layoutEdittext.setErrorEnabled(false);
@@ -65,14 +76,50 @@ public class EditTextViewHolder extends RecyclerView.ViewHolder {
 
 
     }
+    public void checkAllFieldCondition(List<JSONModel> jsonModelList, String cValue, String myClass){
+        for(JSONModel model : jsonModelList){
+            if(!model.getCondition().equalsIgnoreCase("")){
+                String condition = model.getCondition().trim();
+                String[] conditionArray = condition.split(" ");
+                //check condition length
+                String cval = conditionArray[0];
+                String cOperator = conditionArray[1];
+                String ccValue = conditionArray[2]; //value to check >
+                String cAction = conditionArray[3].trim(); //action to perform schow or hide
+                String cClass = conditionArray[4];
+
+                if(cval.length() > 4 && cval.substring(ccValue.length()-4).equalsIgnoreCase(".val")
+                && cval.contains(myClass)) {
+
+                    //displayFields(model.getCondition(), cValue);
+                }
+            }
+
+        }
+
+    }
+
     public void displayFields(String condition, String mValue){
         DynamicFieldModel dfm = DynamicFields.checkCondition(condition,mValue);
 
         if (dfm.isChecked() && !dfm.getClassName().equalsIgnoreCase("")) {
-            jsonToFormClickListener.showHideField(dfm.getClassName(), "show");
+            String[] arClass = dfm.getClassName().split(",");
+            if(condition.equalsIgnoreCase("x")){
+                int ln = Integer.parseInt(mValue);
+                for(int k=0; k<ln; k++){
+                    jsonToFormClickListener.showHideField(arClass[k], dfm.getAction());
+                }
+            }else {
+                for (String aClass1 : arClass)
+                    jsonToFormClickListener.showHideField(aClass1, dfm.getAction());
+            }
         } else {
-            if(!dfm.getClassName().equalsIgnoreCase(""))
-                jsonToFormClickListener.showHideField(dfm.getClassName(), "hide");
+            if(!dfm.getClassName().equalsIgnoreCase("")){
+                String[] arClass = dfm.getClassName().split(",");
+                for (String aClass1 : arClass)
+                    jsonToFormClickListener.showHideField(aClass1, "hide");
+            }
+
         }
     }
 

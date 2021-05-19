@@ -25,13 +25,19 @@ public class SurveyForm {
     private String schema_path;
     private String downloadDate;
     private String newVersion;
+    private String surveyTitle;
+    private boolean isFromLocal = false;
+    private String dataUrl;
     //private int countRemote = 0;
     //private  int countLocal = 0;
     @Ignore
     private JsonArray schemas;
 
+    @Ignore
+    private int status;
+
     public SurveyForm(String id,String title, String version, String description, int isDownloaded,
-                      String schema_path,String downloadDate){
+                      String schema_path,String downloadDate,String surveyTitle, boolean isFromLocal, String dataUrl){
         this.id = id;
         this.title = title;
         this.version = version;
@@ -39,8 +45,14 @@ public class SurveyForm {
         this.isDownloaded = isDownloaded;
         this.schema_path = schema_path;
         this.downloadDate = downloadDate;
+        this.surveyTitle = surveyTitle;
+
+        //this.status = status;
         //this.countLocal = countLocal;
         //this.countRemote = countRemote;
+        this.isFromLocal = isFromLocal;
+        this.dataUrl = dataUrl;
+
 
     }
     public String getId(){
@@ -105,6 +117,13 @@ public class SurveyForm {
         return s;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
     /*public int getCountLocal() {
         return countLocal;
     }
@@ -130,9 +149,34 @@ public class SurveyForm {
         return newVersion;
     }
 
+    public String getSurveyTitle() {
+        return surveyTitle;
+    }
+
+    public void setSurveyTitle(String surveyTitle) {
+        this.surveyTitle = surveyTitle;
+    }
+
     public void setFormSchema(JsonArray schemas) {
         this.schemas = schemas;
     }
+
+    public boolean isFromLocal() {
+        return isFromLocal;
+    }
+
+    public String getDataUrl() {
+        return dataUrl;
+    }
+
+    public void setDataUrl(String dataUrl) {
+        this.dataUrl = dataUrl;
+    }
+
+    public void setFromLocal(boolean fromLocal) {
+        isFromLocal = fromLocal;
+    }
+
     @Override
     public boolean equals(Object o){
         if (!(o instanceof SurveyForm)){

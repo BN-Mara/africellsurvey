@@ -21,9 +21,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.africell.africellsurvey.R;
 import com.africell.africellsurvey.databinding.FragmentFillupBinding;
 import com.africell.africellsurvey.helper.CommonUtils;
 import com.africell.africellsurvey.helper.DateConverter;
@@ -31,6 +34,7 @@ import com.africell.africellsurvey.helper.FusedLocationService;
 import com.africell.africellsurvey.helper.ImageConverter;
 import com.africell.africellsurvey.helper.ImagePicker;
 import com.africell.africellsurvey.helper.LocationFinder;
+import com.africell.africellsurvey.ui.MainActivity;
 import com.africell.africellsurvey.viewmodel.SurveyFormViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -146,6 +150,8 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(SurveyFormViewModel.class);
         getActivity().setTitle(viewModel.getCurrentForm().getTitle());
+        //ImageButton btn = (ImageButton) ((MainActivity)getActivity()).imgbtn;
+        //btn.setVisibility(View.GONE);
         mFusedLocationClient = getFusedLocationProviderClient(getActivity());
         DataValueHashMap.init();
         initRecyclerView();
@@ -168,8 +174,10 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
         }.getType());
         jsonModelList.addAll(jsonModelList1);
         for( JSONModel jsonModel : jsonModelList1){
-            if(!jsonModel.getId().equalsIgnoreCase("submit_button"))
-                DataValueHashMap.put(jsonModel.getId(),"");
+            if(!jsonModel.getId().equalsIgnoreCase("submit_button")) {
+                if (jsonModel.getType() != 1)
+                    DataValueHashMap.put(jsonModel.getId(), "");
+            }
         }
 
         mAdapter.notifyDataSetChanged();
@@ -345,7 +353,6 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
             DynamicFields.showField(binding.recyclerview2, jsonModelList, name);
             isShown = true;
         }
-
         else {
             DynamicFields.hideField(binding.recyclerview2, jsonModelList, name);
             isShown = false;
@@ -402,7 +409,6 @@ public class FillupFragment extends Fragment implements JsonToFormClickListener 
             //fetchData();
             //setLocation();
             DataValueHashMap.init();
-
             initRecyclerView();
             //fetchData();
         } catch (JSONException e) {
