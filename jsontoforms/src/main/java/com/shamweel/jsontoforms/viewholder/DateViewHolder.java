@@ -13,6 +13,7 @@ import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
 import com.shamweel.jsontoforms.models.DynamicFieldModel;
 import com.shamweel.jsontoforms.models.JSONModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
+import com.shamweel.jsontoforms.utils.ShowHideFiled;
 import com.shamweel.jsontoforms.validate.DynamicFields;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ public class DateViewHolder extends RecyclerView.ViewHolder {
     public TextInputLayout layoutDate;
     public TextInputEditText etdate;
     JsonToFormClickListener jsonToFormClickListener;
+    public ShowHideFiled showHideFiled;
 
 
     public DateViewHolder(@NonNull final View itemView, List<JSONModel> jsonModelList, JsonToFormClickListener jsonToFormClickListener) {
@@ -59,8 +61,11 @@ public class DateViewHolder extends RecyclerView.ViewHolder {
             layoutDate.getEditText().setText(sdf.format(myCalendar.getTime()));
             DataValueHashMap.put(jsonModelList.get(position).getId(), sdf.format(myCalendar.getTime()));
             String condition = jsonModelList.get(position).getCondition();
-            if(!condition.equalsIgnoreCase(""))
-                displayFields(condition, sdf.format(myCalendar.getTime()));
+            if(!condition.equalsIgnoreCase("")){
+                showHideFiled = new ShowHideFiled(jsonToFormClickListener);
+                showHideFiled.displayFields(condition,sdf.format(myCalendar.getTime()));
+            }
+               // displayFields(condition, sdf.format(myCalendar.getTime()));
 
 
         };

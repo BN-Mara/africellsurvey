@@ -15,4 +15,6 @@
     <string name="channel_description">Africellsurvey  Channel</string>
     <string name="ip">IP</string>
     <string name="send_to">share data</string>
+    <string name="share_data">Share data</string>
+    <string name="formtxt">Form</string>
 </resources>

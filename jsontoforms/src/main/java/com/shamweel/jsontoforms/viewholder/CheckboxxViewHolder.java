@@ -18,6 +18,7 @@ import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
 import com.shamweel.jsontoforms.models.DynamicFieldModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
 import com.shamweel.jsontoforms.models.JSONModel;
+import com.shamweel.jsontoforms.utils.ShowHideFiled;
 import com.shamweel.jsontoforms.validate.DynamicFields;
 
 import java.util.Collection;
@@ -30,6 +31,7 @@ public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
     public TextView txtCheckbox;
     public CheckboxGroup chCheck;
     public JsonToFormClickListener jsonToFormClickListener;
+    public ShowHideFiled showHideFiled;
     public CheckboxxViewHolder(@NonNull View itemView,  List<JSONModel> jsonModelList, JsonToFormClickListener jsonToFormClickListener) {
         super(itemView);
         txtCheckbox = itemView.findViewById(R.id.txt_checkboxx);
@@ -59,7 +61,12 @@ public class CheckboxxViewHolder extends RecyclerView.ViewHolder {
 
                 String condition = jsonModelList.get(getAdapterPosition()).getCondition();
                 if(!condition.equalsIgnoreCase(""))
-                    displayFields(condition, chValue);
+                {
+
+                    //displayFields(condition, chValue);
+                    showHideFiled = new ShowHideFiled(jsonToFormClickListener);
+                    showHideFiled.displayFields(condition,chValue);
+                }
 
                 if (itemView.getRootView().findFocus() != null) {
                     itemView.getRootView().findFocus().clearFocus();

@@ -13,6 +13,7 @@ import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
 import com.shamweel.jsontoforms.models.DynamicFieldModel;
 import com.shamweel.jsontoforms.models.JSONModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
+import com.shamweel.jsontoforms.utils.ShowHideFiled;
 import com.shamweel.jsontoforms.validate.DynamicFields;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class SpinnerViewHolder extends RecyclerView.ViewHolder {
     public TextView txtSpinner;
     public Spinner spinner;
     public JsonToFormClickListener jsonToFormClickListener;
+    public ShowHideFiled showHideFiled;
 
 
     public SpinnerViewHolder(@NonNull View itemView, List<JSONModel> jsonModelList,JsonToFormClickListener jsonToFormClickListener) {
@@ -47,7 +49,11 @@ public class SpinnerViewHolder extends RecyclerView.ViewHolder {
 
                 String condition = jsonModelList.get(getAdapterPosition()).getCondition();
                 if(!condition.equalsIgnoreCase(""))
-                    displayFields(condition, selectedValue);
+                {
+                    //displayFields(condition, selectedValue);
+                    showHideFiled = new ShowHideFiled(jsonToFormClickListener);
+                    showHideFiled.displayFields(condition,selectedValue);
+                }
 
                 if (itemView.getRootView().findFocus() != null) {
                    itemView.getRootView().findFocus().clearFocus();

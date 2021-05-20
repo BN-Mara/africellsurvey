@@ -212,6 +212,9 @@ public class FormFragment extends Fragment implements SharedPreferences.OnShared
                 //Intent intent = new Intent(getContext(), FormActivity.class);
                 //intent.putExtra("path",viewModel.getCurrentForm().getSchema_path());
                 //startActivity(intent);
+                binding.progressBarCyclic.setVisibility(View.VISIBLE);
+                binding.buton.setText("...Loading");
+                binding.buton.setEnabled(false);
                 ((MainActivity) requireActivity()).replaceFragment(FillupFragment.class);
             }
         });

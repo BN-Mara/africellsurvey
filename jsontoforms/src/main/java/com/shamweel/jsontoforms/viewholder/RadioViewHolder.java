@@ -15,6 +15,7 @@ import com.shamweel.jsontoforms.interfaces.JsonToFormClickListener;
 import com.shamweel.jsontoforms.models.DynamicFieldModel;
 import com.shamweel.jsontoforms.models.JSONModel;
 import com.shamweel.jsontoforms.sigleton.DataValueHashMap;
+import com.shamweel.jsontoforms.utils.ShowHideFiled;
 import com.shamweel.jsontoforms.validate.DynamicFields;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class RadioViewHolder extends RecyclerView.ViewHolder {
     public TextView txtRadio;
     public RadioGroup rGroup;
     JsonToFormClickListener  mSubmitBtnListener;
+    public ShowHideFiled showHideFiled;
 
     public RadioViewHolder(@NonNull View itemView, List<JSONModel> jsonModelList, JsonToFormClickListener mSubmitBtnListener) {
         super(itemView);
@@ -58,7 +60,11 @@ public class RadioViewHolder extends RecyclerView.ViewHolder {
                 Log.i("ADAPTER_POS",""+getAdapterPosition());
                 String condition = jsonModelList.get(getAdapterPosition()).getCondition();
                 if(!condition.equalsIgnoreCase(""))
-                    displayFields(condition, rdValue);
+                {
+                    //displayFields(condition, rdValue);
+                    showHideFiled = new ShowHideFiled(mSubmitBtnListener);
+                    showHideFiled.displayFields(condition,rdValue);
+                }
 
                 if (rGroup.getCheckedRadioButtonId() != -1){
                     for (int j=0; j<radioGroup.getChildCount(); j++){
